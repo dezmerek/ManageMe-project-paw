@@ -38,7 +38,7 @@ export class RegisterComponent {
     this.authEvent.emit(true);
   }
 
-  switchToLogin() {
+  setAuth() {
     this.authEvent.emit(false);
   }
 }
