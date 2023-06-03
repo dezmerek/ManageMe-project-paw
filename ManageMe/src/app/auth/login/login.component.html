@@ -13,6 +13,8 @@
     </div>
 
     <button class="btn btn-outline-light btn-lg px-5" (click)="loginUser()">Zaloguj się</button>
+
+    <p class="text-danger m-3" *ngIf="invalidLogin">Nieprawidłowe dane logowania.</p>
 </div>
 
 <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Nie pamiętasz hasła?</a></p>
@@ -20,5 +22,4 @@
 <div>
     <p class="mb-0">Nie posiadasz konta? <a class="text-white-50 fw-bold" (click)="setAuth()">Kliknij aby założyć!</a>
     </p>
-
 </div>

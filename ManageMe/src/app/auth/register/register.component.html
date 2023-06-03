@@ -3,8 +3,8 @@
     <p class="text-white-50 mb-5">Podaj swój login, email i hasło!</p>
 
     <div class="form-outline form-white mb-4">
-        <input type="email" id="typeEmailX" class="form-control form-control-lg" [(ngModel)]="email" />
-        <label class="form-label" for="typeEmailX">Login</label>
+        <input type="text" id="typeLogin" class="form-control form-control-lg" [(ngModel)]="login" />
+        <label class="form-label" for="typeLogin">Login</label>
     </div>
 
     <div class="form-outline form-white mb-4">
@@ -26,6 +26,6 @@
 </div>
 
 <div>
-    <p class="mb-0">Posiadasz już konto? <a class="text-white-50 fw-bold" (click)="setAuth()">Kliknij aby
-            zalogować się!</a></p>
+    <p class="mb-0">Posiadasz już konto? <a class="text-white-50 fw-bold" (click)="setAuth()">Kliknij aby zalogować
+            się!</a></p>
 </div>

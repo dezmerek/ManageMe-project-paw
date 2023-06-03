@@ -8,11 +8,14 @@ import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 })
 export class AppComponent implements OnInit {
   title = 'ManageMe';
-
+  loggedIn: boolean = false; // Dodaj tę właściwość
+  onAuthEvent(loggedIn: boolean) {
+    this.loggedIn = loggedIn;
+  }
   constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
   ngOnInit() {
-    const accounts = [
+    const accountList = [
       {
         login: 'admin',
         password: 'admin',
@@ -36,6 +39,12 @@ export class AppComponent implements OnInit {
       }
     ];
 
-    this.storage.set('accounts', accounts);
+    // Sprawdź, czy dane już istnieją w localStorage
+    const localStorageAccounts: any[] = this.storage.get('accounts') || [];
+
+    // Jeśli dane jeszcze nie istnieją, zapisz je do localStorage
+    if (localStorageAccounts.length === 0) {
+      this.storage.set('accounts', accountList);
+    }
   }
 }

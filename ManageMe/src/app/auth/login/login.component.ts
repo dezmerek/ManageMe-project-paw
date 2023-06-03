@@ -11,6 +11,7 @@ export class LoginComponent {
 
   login: string = '';
   password: string = '';
+  invalidLogin: boolean = false;
 
   constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
@@ -26,14 +27,19 @@ export class LoginComponent {
     console.log('Zalogowano!');
 
     // Sprawdź dane logowania z localStorage
-    const storedAccount = this.storage.get('account');
-    if (storedAccount && storedAccount.email === this.login && storedAccount.password === this.password) {
+    const account: any = this.storage.get('account');
+    const accounts: any[] = this.storage.get('accounts') || [];
+    const foundAccount = accounts.find((acc: any) => acc.login === this.login && acc.password === this.password);
+
+    if (foundAccount || (account && account.login === this.login && account.password === this.password)) {
       // Użytkownik został zalogowany pomyślnie
       this.storage.set('loggedIn', true);
       this.authEvent.emit(true);
     } else {
       // Nieprawidłowe dane logowania
+      this.invalidLogin = true;
       console.log('Nieprawidłowe dane logowania');
     }
   }
+
 }
