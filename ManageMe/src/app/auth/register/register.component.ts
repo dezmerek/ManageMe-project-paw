@@ -13,6 +13,8 @@ export class RegisterComponent {
   password: string = '';
   firstName: string = '';
   lastName: string = '';
+  selectedRole: string = ''; // Dodaj pole wybranej roli
+  roles: string[] = ['Admin', 'Devops', 'iii.	Developer']; // Lista dostępnych ról
 
   constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
@@ -22,13 +24,15 @@ export class RegisterComponent {
     console.log('Hasło:', this.password);
     console.log('Imię:', this.firstName);
     console.log('Nazwisko:', this.lastName);
+    console.log('Rola:', this.selectedRole);
 
     // Zapisz dane konta w localStorage
     const account = {
       email: this.email,
       password: this.password,
       firstName: this.firstName,
-      lastName: this.lastName
+      lastName: this.lastName,
+      role: this.selectedRole // Zapisz wybraną rolę
     };
     this.storage.set('account', account);
 
