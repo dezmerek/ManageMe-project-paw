@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 
 @Component({
@@ -15,7 +16,10 @@ export class RegisterComponent {
   lastName: string = '';
   roles: string[] = ['Admin', 'Devops', 'Developer']; // Lista dostępnych ról
 
-  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
+  constructor(
+    private router: Router,
+    @Inject(LOCAL_STORAGE) private storage: StorageService
+  ) { }
 
   register() {
     console.log('Rejestracja...');
@@ -39,17 +43,40 @@ export class RegisterComponent {
       password: this.password,
       firstName: this.firstName,
       lastName: this.lastName,
-      role: 'Developer' // Ustaw rolę na "Developer"
+      role: 'developer' // Ustaw rolę na "Developer"
     };
 
     accounts.push(newAccount);
     this.storage.set('accounts', accounts);
     console.log('Dodano nowe konto');
 
-    // Przejdź do innej strony lub wykonaj inne działania
+    // Dodaj nowego użytkownika do listy `validUsers`
+    const validUsersJSON = localStorage.getItem('validUsers');
+    const validUsers: any[] = validUsersJSON ? JSON.parse(validUsersJSON) : [];
+    validUsers.push({ login: newAccount.login, password: newAccount.password, role: newAccount.role });
+    localStorage.setItem('validUsers', JSON.stringify(validUsers));
+    console.log('Dodano nowego użytkownika do listy validUsers');
 
-    // Emitowanie zdarzenia autoryzacji
-    this.authEvent.emit(true);
+    // Logika logowania użytkownika po rejestracji
+    console.log('Login:', newAccount.login);
+    console.log('Password:', newAccount.password);
+    console.log('Zalogowano!');
+
+    // Sprawdź dane logowania
+    const foundUser = validUsers.find(
+      (user) => user.login === newAccount.login && user.password === newAccount.password
+    );
+
+    if (foundUser) {
+      // Użytkownik został zalogowany pomyślnie
+      localStorage.setItem('loggedIn', 'true');
+      localStorage.setItem('userRole', foundUser.role);
+      this.router.navigate(['/projects']);
+      this.authEvent.emit(true); // Emitowanie zdarzenia autoryzacji
+    } else {
+      // Nieprawidłowe dane logowania
+      console.log('Nieprawidłowe dane logowania');
+    }
   }
 
   setAuth() {

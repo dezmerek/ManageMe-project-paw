@@ -7,12 +7,13 @@
                     <h3 class="card-title">{{ project.name }}</h3>
                     <p class="card-text">{{ project.description }}</p>
                     <button class="btn btn-primary" (click)="workOnProject(project)">Pracuj</button>
-                    <button class="btn btn-danger" (click)="deleteProject(i)">Usuń</button>
-                    <button class="btn btn-secondary" (click)="editProject(project, i)">Edytuj</button>
+                    <button *ngIf="isAdmin || isDevOps" class="btn btn-danger" (click)="deleteProject(i)">Usuń</button>
+                    <button *ngIf="isAdmin || isDevOps" class="btn btn-secondary"
+                        (click)="editProject(project, i)">Edytuj</button>
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" (click)="toggleAddForm()">Nowy projekt</button>
+        <button *ngIf="isAdmin || isDevOps" class="btn btn-primary" (click)="toggleAddForm()">Nowy projekt</button>
         <div *ngIf="showAddForm">
             <h3 *ngIf="editMode">Edytuj projekt</h3>
             <h3 *ngIf="!editMode">Dodaj projekt</h3>
@@ -27,8 +28,9 @@
                     <textarea id="description" name="description" [(ngModel)]="editedProject.description" required
                         class="form-control"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">{{ editMode ? 'Zapisz zmiany' : 'Dodaj projekt'
-                    }}</button>
+                <button type="submit" class="btn btn-primary">
+                    {{ editMode ? 'Zapisz zmiany' : 'Dodaj projekt' }}
+                </button>
             </form>
         </div>
     </div>

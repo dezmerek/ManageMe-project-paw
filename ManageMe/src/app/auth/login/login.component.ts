@@ -1,5 +1,4 @@
-import { Component, Output, EventEmitter, Inject } from '@angular/core';
-import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { User } from '../../models/user.model';
 import { Router } from '@angular/router';
 
@@ -21,10 +20,7 @@ export class LoginComponent {
 
   invalidLogin: boolean = false;
 
-  constructor(
-    @Inject(LOCAL_STORAGE) private storage: StorageService,
-    private router: Router
-  ) {
+  constructor(private router: Router) {
     this.user.role = 'developer'; // Ustaw domyślną wartość dla roli
   }
 
@@ -39,26 +35,32 @@ export class LoginComponent {
     console.log('Password:', this.user.password);
     console.log('Zalogowano!');
 
-    // Sprawdź dane logowania z localStorage
-    const account: any = this.storage.get('account');
-    const accounts: any[] = this.storage.get('accounts') || [];
-    const foundAccount = accounts.find(
-      (acc: any) =>
-        acc.login === this.user.login && acc.password === this.user.password
+    // Sprawdź dane logowania
+    const validUsersJSON = localStorage.getItem('validUsers');
+    const validUsers: any[] = validUsersJSON ? JSON.parse(validUsersJSON) : [];
+
+    const allUsers = [
+      ...validUsers,
+      { login: 'admin', password: 'admin', role: 'admin' },
+      { login: 'devops', password: 'devops', role: 'devops' },
+      { login: 'developer', password: 'developer', role: 'developer' }
+    ];
+
+    const foundUser = allUsers.find(
+      (user) => user.login === this.user.login && user.password === this.user.password
     );
 
-    if (
-      foundAccount ||
-      (account && account.login === this.user.login && account.password === this.user.password)
-    ) {
+    if (foundUser) {
       // Użytkownik został zalogowany pomyślnie
-      this.storage.set('loggedIn', true);
-      this.authEvent.emit(true);
+      localStorage.setItem('loggedIn', 'true');
+      localStorage.setItem('userRole', foundUser.role);
       this.router.navigate(['/projects']);
+      this.authEvent.emit(true); // Emitowanie zdarzenia autoryzacji
     } else {
       // Nieprawidłowe dane logowania
       this.invalidLogin = true;
       console.log('Nieprawidłowe dane logowania');
     }
   }
+
 }
