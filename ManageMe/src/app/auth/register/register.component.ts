@@ -13,7 +13,6 @@ export class RegisterComponent {
   password: string = '';
   firstName: string = '';
   lastName: string = '';
-  selectedRole: string = ''; // Dodaj pole wybranej roli
   roles: string[] = ['Admin', 'Devops', 'Developer']; // Lista dostępnych ról
 
   constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
@@ -24,7 +23,6 @@ export class RegisterComponent {
     console.log('Hasło:', this.password);
     console.log('Imię:', this.firstName);
     console.log('Nazwisko:', this.lastName);
-    console.log('Rola:', this.selectedRole);
 
     // Sprawdź, czy konto o podanym loginie już istnieje w localStorage
     const accounts: any[] = this.storage.get('accounts') || [];
@@ -41,7 +39,7 @@ export class RegisterComponent {
       password: this.password,
       firstName: this.firstName,
       lastName: this.lastName,
-      role: this.selectedRole // Zapisz wybraną rolę
+      role: 'Developer' // Ustaw rolę na "Developer"
     };
 
     accounts.push(newAccount);
@@ -53,7 +51,6 @@ export class RegisterComponent {
     // Emitowanie zdarzenia autoryzacji
     this.authEvent.emit(true);
   }
-
 
   setAuth() {
     this.authEvent.emit(false);
