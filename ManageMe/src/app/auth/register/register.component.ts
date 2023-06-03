@@ -14,7 +14,7 @@ export class RegisterComponent {
   firstName: string = '';
   lastName: string = '';
   selectedRole: string = ''; // Dodaj pole wybranej roli
-  roles: string[] = ['Admin', 'Devops', 'iii.	Developer']; // Lista dostępnych ról
+  roles: string[] = ['Admin', 'Devops', 'Developer']; // Lista dostępnych ról
 
   constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
