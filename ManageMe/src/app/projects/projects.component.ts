@@ -8,6 +8,7 @@ import { Project } from '../models/project.model';
 })
 export class ProjectsComponent implements OnInit {
   projects: Project[] = [];
+  showAddForm: boolean = false;
 
   ngOnInit() {
     const project1: Project = {
@@ -30,12 +31,19 @@ export class ProjectsComponent implements OnInit {
       description: 'Mauris a ex hendrerit, bibendum lectus non, auctor neque. Fusce ut lorem ante. Morbi blandit purus gravida turpis dapibus rutrum.'
     };
 
-
     this.projects.push(project1, project2, project3, project4);
   }
 
+  toggleAddForm() {
+    this.showAddForm = !this.showAddForm;
+  }
+
+  addProject(project: Project) {
+    this.projects.push(project);
+    this.showAddForm = false;
+  }
+
   workOnProject(project: Project) {
-    // Logic for working on the project
     console.log('Working on project:', project.name);
   }
 }

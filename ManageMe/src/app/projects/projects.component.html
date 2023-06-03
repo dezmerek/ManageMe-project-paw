@@ -10,5 +10,8 @@
                 </div>
             </div>
         </div>
+        <button class="btn btn-primary" (click)="toggleAddForm()">Nowy projekt</button>
+        <div *ngIf="showAddForm">
+            <app-add-project (projectAdded)="addProject($event)"></app-add-project>
+        </div>
     </div>
-</div>
