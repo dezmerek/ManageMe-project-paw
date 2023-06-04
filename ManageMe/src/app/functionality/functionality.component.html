@@ -57,13 +57,31 @@
         </button>
     </div>
 
-    <app-details-functionality [functionality]="selectedFunctionality"></app-details-functionality>
+    <app-details-functionality *ngIf="selectedFunctionality"
+        [functionality]="selectedFunctionality"></app-details-functionality>
 
-    <div *ngIf="selectedFunctionality">
-        <button class="btn btn-primary" (click)="selectedFunctionality = null">
-            Powrót do listy funkcjonalności
-        </button>
+    <div class="row" *ngIf="selectedFunctionality">
+        <div class="col">
+            <h3>Zadania:</h3>
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let task of (selectedFunctionality?.tasks || [])"
+                    (click)="selectTask(task)">
+                    {{ task.name }}
+                    <button class="btn btn-success" (click)="moveTask(task, 'todo')">Todo</button>
+                    <button class="btn btn-success" (click)="moveTask(task, 'doing')">Doing</button>
+                    <button class="btn btn-success" (click)="moveTask(task, 'done')">Done</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col">
+            <app-add-task (taskAdded)="addTask($event)"></app-add-task>
+        </div>
     </div>
+
+    <button class="btn btn-primary" *ngIf="selectedFunctionality" (click)="clearSelectedFunctionality()">
+        Powrót do listy funkcjonalności
+    </button>
 
     <div class="mt-3" *ngIf="!selectedFunctionality">
         <button routerLink="/projects" class="btn btn-primary">
@@ -71,4 +89,5 @@
         </button>
     </div>
 
+    <!-- ... -->
 </div>

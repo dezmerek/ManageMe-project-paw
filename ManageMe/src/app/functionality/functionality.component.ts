@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Functionality } from '../models/functionality.model';
+import { Task } from '../models/task.model';
 
 @Component({
   selector: 'app-functionality',
@@ -6,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./functionality.component.scss']
 })
 export class FunctionalityComponent implements OnInit {
-  functionalities: any[] = [];
+  functionalities: Functionality[] = [];
 
-  selectedFunctionality: any;
+  selectedFunctionality: Functionality | null = null;
   showAddFunctionality = false;
+
+  newTaskName = '';
+  newTaskPriority = '';
 
   ngOnInit() {
     this.loadFunctionalities();
@@ -21,30 +26,7 @@ export class FunctionalityComponent implements OnInit {
       this.functionalities = JSON.parse(storedFunctionalities);
     } else {
       this.functionalities = [
-        {
-          name: 'Funkcjonalność 1',
-          description: 'Opis funkcjonalności 1',
-          priority: 'Wysoki',
-          project: 'Projekt A',
-          owner: 'Jan Kowalski',
-          status: 'doing'
-        },
-        {
-          name: 'Funkcjonalność 2',
-          description: 'Opis funkcjonalności 2',
-          priority: 'Średni',
-          project: 'Projekt B',
-          owner: 'Anna Nowak',
-          status: 'todo'
-        },
-        {
-          name: 'Funkcjonalność 3',
-          description: 'Opis funkcjonalności 3',
-          priority: 'Niski',
-          project: 'Projekt C',
-          owner: 'Adam Nowicki',
-          status: 'done'
-        }
+        // ... Your initial set of functionalities ...
       ];
       this.saveFunctionalities();
     }
@@ -54,11 +36,11 @@ export class FunctionalityComponent implements OnInit {
     localStorage.setItem('functionalities', JSON.stringify(this.functionalities));
   }
 
-  selectFunctionality(functionality: any) {
+  selectFunctionality(functionality: Functionality) {
     this.selectedFunctionality = functionality;
   }
 
-  addFunctionality(newFunctionality: any) {
+  addFunctionality(newFunctionality: Functionality) {
     this.functionalities.push(newFunctionality);
     this.saveFunctionalities();
     this.showAddFunctionality = false;
@@ -69,15 +51,41 @@ export class FunctionalityComponent implements OnInit {
     return this.functionalities.filter(functionality => functionality.status === status);
   }
 
-  pracuj(functionality: any) {
-    // Handle the "Pracuj" button click event for the functionality item
+  pracuj(functionality: Functionality) {
     console.log('Pracuj clicked for:', functionality);
-    // Perform the desired functionality-specific action here
-    // For example, you can update the status of the functionality or perform some other operation.
+    // Perform the desired action specific to the functionality
   }
 
-  moveFunctionality(functionality: any, status: string) {
+  moveFunctionality(functionality: Functionality, status: string) {
     functionality.status = status;
     this.saveFunctionalities();
+  }
+
+  selectTask(task: Task) {
+    console.log('Selected task:', task);
+    // Perform operations on the selected task
+  }
+
+  moveTask(task: Task, status: string) {
+    task.status = status;
+    if (status === 'doing') {
+      task.startDate = new Date();
+      task.assignedUser = 'devops';
+    } else if (status === 'done') {
+      task.endDate = new Date();
+    }
+    this.saveFunctionalities();
+  }
+
+  clearSelectedFunctionality() {
+    this.selectedFunctionality = null;
+  }
+
+  addTask(newTask: Task) {
+    if (this.selectedFunctionality) {
+      newTask.functionality = this.selectedFunctionality;
+      this.selectedFunctionality.tasks.push(newTask);
+      this.saveFunctionalities();
+    }
   }
 }

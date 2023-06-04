@@ -1,0 +1,16 @@
+<h3>Dodaj zadanie:</h3>
+<form (ngSubmit)="addTask()">
+    <div class="form-group">
+        <label>Nazwa zadania:</label>
+        <input type="text" class="form-control" [(ngModel)]="newTaskName" name="taskName" required>
+    </div>
+    <div class="form-group">
+        <label>Priorytet:</label>
+        <select class="form-control" [(ngModel)]="newTaskPriority" name="taskPriority" required>
+            <option value="Wysoki">Wysoki</option>
+            <option value="Średni">Średni</option>
+            <option value="Niski">Niski</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Dodaj</button>
+</form>
