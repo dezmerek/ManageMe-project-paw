@@ -15,6 +15,8 @@ export class RegisterComponent {
   firstName: string = '';
   lastName: string = '';
   roles: string[] = ['Admin', 'Devops', 'Developer']; // Lista dostępnych ról
+  securityQuestion: string = '';
+  securityAnswer: string = '';
 
   constructor(
     private router: Router,
@@ -47,8 +49,11 @@ export class RegisterComponent {
       password: this.password,
       firstName: this.firstName,
       lastName: this.lastName,
-      role: 'developer' // Ustaw rolę na "Developer"
+      role: 'developer', // Ustaw rolę na "Developer"
+      securityQuestion: this.securityQuestion, // Dodaj pytanie pomocnicze
+      securityAnswer: this.securityAnswer // Dodaj odpowiedź na pytanie pomocnicze
     };
+
 
     accounts.push(newAccount);
     this.storage.set('accounts', accounts);
@@ -61,27 +66,39 @@ export class RegisterComponent {
     localStorage.setItem('validUsers', JSON.stringify(validUsers));
     console.log('Dodano nowego użytkownika do listy validUsers');
 
-    // Logika logowania użytkownika po rejestracji
-    console.log('Login:', newAccount.login);
-    console.log('Password:', newAccount.password);
-    console.log('Zalogowano!');
+    // Ustaw nowo zarejestrowanego użytkownika jako zalogowanego
+    localStorage.setItem('loggedIn', 'true');
+    localStorage.setItem('userRole', newAccount.role);
+    localStorage.setItem('loggedInUserId', userId);
 
-    // Sprawdź dane logowania
-    const foundUser = validUsers.find(
-      (user) => user.login === newAccount.login && user.password === newAccount.password
-    );
-
-    if (foundUser) {
-      // Użytkownik został zalogowany pomyślnie
-      localStorage.setItem('loggedIn', 'true');
-      localStorage.setItem('userRole', foundUser.role);
-      this.router.navigate(['/projects']);
-      this.authEvent.emit(true); // Emitowanie zdarzenia autoryzacji
-    } else {
-      // Nieprawidłowe dane logowania
-      console.log('Nieprawidłowe dane logowania');
-    }
+    this.router.navigate(['/projects']);
+    this.authEvent.emit(true); // Emitowanie zdarzenia autoryzacji
   }
+
+  changePasswordWithSecurityQuestion() {
+    const accounts: any[] = this.storage.get('accounts') || [];
+    const foundAccount = accounts.find((account: any) => account.login === this.login);
+
+    if (!foundAccount) {
+      console.log('Nie znaleziono konta o podanym loginie');
+      return;
+    }
+
+    // Sprawdź odpowiedź na pytanie pomocnicze
+    if (foundAccount.securityAnswer !== this.securityAnswer) {
+      console.log('Nieprawidłowa odpowiedź na pytanie pomocnicze');
+      return;
+    }
+
+    // Zmień hasło
+    foundAccount.password = this.password;
+    this.storage.set('accounts', accounts);
+    console.log('Hasło zostało zmienione');
+
+    // Przejdź do strony logowania
+    this.router.navigate(['/login']);
+  }
+
 
   setAuth() {
     this.authEvent.emit(false);

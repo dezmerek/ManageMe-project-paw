@@ -27,12 +27,13 @@ export class ProjectsComponent implements OnInit {
 
   isAdmin = false;
   isDevOps = false;
+  userRole: string | null = null;
 
   constructor(private router: Router) { }
 
   ngOnInit() {
-    this.loadProjectsFromLocalStorage();
     this.checkUserRole();
+    this.loadProjectsFromLocalStorage();
   }
 
   toggleAddForm() {
@@ -54,7 +55,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   editProject(project: Project, index: number) {
-    if (this.isAdmin || this.isDevOps) {
+    if (this.isAdmin && (this.isDevOps || !this.isDevOps)) {
       this.editMode = true;
       this.editedProjectIndex = index;
       this.editedProject = { ...project };
@@ -65,7 +66,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   updateProject() {
-    if (this.isAdmin || this.isDevOps) {
+    if (this.isAdmin && (this.isDevOps || !this.isDevOps)) {
       if (this.editedProjectIndex !== null) {
         this.projects[this.editedProjectIndex] = { ...this.editedProject };
         this.saveProjectsToLocalStorage();
@@ -153,17 +154,13 @@ export class ProjectsComponent implements OnInit {
   }
 
   private checkUserRole() {
-    const userRole = localStorage.getItem('userRole');
+    this.userRole = localStorage.getItem('userRole');
 
-    if (userRole === 'admin') {
+    if (this.userRole === 'Admin') {
       this.isAdmin = true;
-      if (this.isDevOps !== undefined) {
-        this.isDevOps = true;
-      }
-    } else if (userRole === 'devops') {
-      if (this.isDevOps !== undefined) {
-        this.isDevOps = true;
-      }
+      this.isDevOps = true;
+    } else if (this.userRole === 'DevOps') {
+      this.isDevOps = true;
     }
   }
 }

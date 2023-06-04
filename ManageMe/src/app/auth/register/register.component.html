@@ -22,6 +22,21 @@
         <label class="form-label" for="typeLastName">Nazwisko</label>
     </div>
 
+    <!-- ... -->
+    <div class="form-group">
+        <label for="securityQuestion">Pytanie pomocnicze:</label>
+        <input type="text" class="form-control" id="securityQuestion" [(ngModel)]="securityQuestion"
+            name="securityQuestion" required>
+    </div>
+
+    <div class="form-group">
+        <label for="securityAnswer">Odpowiedź na pytanie pomocnicze:</label>
+        <input type="text" class="form-control" id="securityAnswer" [(ngModel)]="securityAnswer" name="securityAnswer"
+            required>
+    </div>
+    <!-- ... -->
+
+
     <button class="btn btn-outline-light btn-lg px-5" type="submit" (click)="register()">Stwórz konto</button>
 </div>
 

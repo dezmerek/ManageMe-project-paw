@@ -5,4 +5,6 @@ export interface User {
     firstName: string;
     lastName: string;
     role: 'admin' | 'devops' | 'developer';
+    securityQuestion: string;
+    securityAnswer: string;
 }

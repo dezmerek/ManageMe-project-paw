@@ -16,7 +16,9 @@ export class LoginComponent {
     password: '',
     firstName: '',
     lastName: '',
-    role: 'developer'
+    role: 'developer',
+    securityQuestion: '',
+    securityAnswer: ''
   };
 
   invalidLogin: boolean = false;
@@ -37,11 +39,11 @@ export class LoginComponent {
     console.log('Zalogowano!');
 
     // Sprawdź dane logowania
-    const validUsersJSON = localStorage.getItem('validUsers');
-    const validUsers: any[] = validUsersJSON ? JSON.parse(validUsersJSON) : [];
+    const accountsJSON = localStorage.getItem('accounts');
+    const accounts: any[] = accountsJSON ? JSON.parse(accountsJSON) : [];
 
     const allUsers = [
-      ...validUsers,
+      ...accounts,
       { id: '1', login: 'admin', password: 'admin', role: 'admin' },
       { id: '2', login: 'devops', password: 'devops', role: 'devops' },
       { id: '3', login: 'developer', password: 'developer', role: 'developer' }
@@ -55,6 +57,7 @@ export class LoginComponent {
       // Użytkownik został zalogowany pomyślnie
       localStorage.setItem('loggedIn', 'true');
       localStorage.setItem('userRole', foundUser.role);
+      localStorage.setItem('loggedInUserId', foundUser.id); // Dodaj tę linię do zapisu identyfikatora zalogowanego użytkownika
       this.router.navigate(['/projects']);
       this.authEvent.emit(true); // Emitowanie zdarzenia autoryzacji
     } else {
@@ -63,5 +66,4 @@ export class LoginComponent {
       console.log('Nieprawidłowe dane logowania');
     }
   }
-
-}
+}  
