@@ -10,6 +10,9 @@ import { RegisterComponent } from './auth/register/register.component';
 import { AuthComponent } from './auth/auth.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { AddProjectComponent } from './projects/add-project/add-project.component';
+import { ProjectDetailsComponent } from './projects/project-details/project-details.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { EditProjectComponent } from './projects/edit-project/edit-project.component';
 
 @NgModule({
   declarations: [
@@ -20,11 +23,15 @@ import { AddProjectComponent } from './projects/add-project/add-project.componen
     AuthComponent,
     ProjectsComponent,
     AddProjectComponent,
+    ProjectDetailsComponent,
+    EditProjectComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    RouterModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

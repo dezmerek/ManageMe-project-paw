@@ -10,7 +10,7 @@
                     <button *ngIf="isAdmin || isDevOps" class="btn btn-danger" (click)="deleteProject(i)">Usuń</button>
                     <button *ngIf="isAdmin || isDevOps" class="btn btn-secondary"
                         (click)="editProject(project, i)">Edytuj</button>
-                    <button class="btn btn-info">Szczegóły</button>
+                    <button class="btn btn-info" [routerLink]="['/projects', project.id]">Szczegóły</button>
                 </div>
             </div>
         </div>
@@ -18,7 +18,8 @@
         <div *ngIf="showAddForm">
             <h3 *ngIf="editMode">Edytuj projekt</h3>
             <h3 *ngIf="!editMode">Dodaj projekt</h3>
-            <form (ngSubmit)="editMode ? updateProject() : addProject(editedProject)" class="my-4">
+            <app-add-project (projectAdded)="addProject($event)" *ngIf="!editMode"></app-add-project>
+            <form (ngSubmit)="updateProject()" *ngIf="editMode" class="my-4">
                 <div class="form-group">
                     <label for="name">Tytuł:</label>
                     <input type="text" id="name" name="name" [(ngModel)]="editedProject.name" required

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Project } from '../models/project.model';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-projects',
@@ -8,30 +9,37 @@ import { Project } from '../models/project.model';
 })
 export class ProjectsComponent implements OnInit {
   projects: Project[] = [];
-  showAddForm: boolean = false;
-  editMode: boolean = false;
+  showAddForm = false;
+  editMode = false;
   editedProjectIndex: number | null = null;
 
   editedProject: Project = {
+    id: '',
     name: '',
-    description: ''
+    description: '',
+    startTime: new Date(),
+    duration: '',
+    estimatedDuration: '',
+    totalHours: 0,
+    people: []
   };
 
-  isAdmin: boolean = false; // Flaga oznaczająca, czy użytkownik jest administratorem
-  isDevOps: boolean = false; // Flaga oznaczająca, czy użytkownik jest devops
+  isAdmin = false;
+  isDevOps = false;
 
   ngOnInit() {
     this.loadProjectsFromLocalStorage();
-    this.checkUserRole(); // Sprawdzanie roli użytkownika przy inicjalizacji komponentu
+    this.checkUserRole();
   }
 
   toggleAddForm() {
     this.showAddForm = !this.showAddForm;
-    this.editMode = false; // W przypadku przełączenia na formularz dodawania, wyłączamy tryb edycji
+    this.editMode = false;
     this.clearEditedProject();
   }
 
   addProject(project: Project) {
+    project.id = uuidv4();
     this.projects.push(project);
     this.saveProjectsToLocalStorage();
     this.showAddForm = false;
@@ -46,11 +54,10 @@ export class ProjectsComponent implements OnInit {
     if (this.isAdmin || this.isDevOps) {
       this.editMode = true;
       this.editedProjectIndex = index;
-      this.editedProject = { ...project }; // Tworzymy kopię projektu do edycji
+      this.editedProject = { ...project };
       this.showAddForm = true;
     } else {
-      // Użytkownik nie ma uprawnień do edycji
-      console.log('Brak uprawnień do edycji projektu.');
+      console.log('Insufficient permissions to edit the project.');
     }
   }
 
@@ -63,8 +70,7 @@ export class ProjectsComponent implements OnInit {
         this.clearEditedProject();
       }
     } else {
-      // Użytkownik nie ma uprawnień do aktualizacji projektu
-      console.log('Brak uprawnień do aktualizacji projektu.');
+      console.log('Insufficient permissions to update the project.');
     }
   }
 
@@ -77,32 +83,50 @@ export class ProjectsComponent implements OnInit {
     if (savedProjects) {
       try {
         this.projects = JSON.parse(savedProjects);
-        console.log('Wczytano projekty z localStorage:', this.projects);
+        console.log('Projects loaded from localStorage:', this.projects);
       } catch (error) {
-        console.error('Błąd parsowania danych projektów z localStorage:', error);
-        this.projects = this.getDefaultProjects(); // Używamy domyślnych danych projektów
+        console.error('Error parsing project data from localStorage:', error);
+        this.projects = this.getDefaultProjects();
       }
     } else {
-      this.projects = this.getDefaultProjects(); // Używamy domyślnych danych projektów
+      this.projects = this.getDefaultProjects();
     }
   }
 
   private getDefaultProjects(): Project[] {
     return [
       {
-        name: 'Projekt A',
+        id: '1',
+        name: 'Project A',
         description:
-          'Mauris a ex hendrerit, bibendum lectus non, auctor neque. Fusce ut lorem ante. Morbi blandit purus gravida turpis dapibus rutrum.'
+          'Mauris a ex hendrerit, bibendum lectus non, auctor neque. Fusce ut lorem ante. Morbi blandit purus gravida turpis dapibus rutrum.',
+        startTime: new Date(),
+        duration: '',
+        estimatedDuration: '',
+        totalHours: 0,
+        people: []
       },
       {
-        name: 'Projekt B',
+        id: '2',
+        name: 'Project B',
         description:
-          'Mauris a ex hendrerit, bibendum lectus non, auctor neque. Fusce ut lorem ante. Morbi blandit purus gravida turpis dapibus rutrum.'
+          'Mauris a ex hendrerit, bibendum lectus non, auctor neque. Fusce ut lorem ante. Morbi blandit purus gravida turpis dapibus rutrum.',
+        startTime: new Date(),
+        duration: '',
+        estimatedDuration: '',
+        totalHours: 0,
+        people: []
       },
       {
-        name: 'Projekt C',
+        id: '3',
+        name: 'Project C',
         description:
-          'Mauris a ex hendrerit, bibendum lectus non, auctor neque. Fusce ut lorem ante. Morbi blandit purus gravida turpis dapibus rutrum.'
+          'Mauris a ex hendrerit, bibendum lectus non, auctor neque. Fusce ut lorem ante. Morbi blandit purus gravida turpis dapibus rutrum.',
+        startTime: new Date(),
+        duration: '',
+        estimatedDuration: '',
+        totalHours: 0,
+        people: []
       }
     ];
   }
@@ -110,23 +134,33 @@ export class ProjectsComponent implements OnInit {
   private clearEditedProject() {
     this.editedProjectIndex = null;
     this.editedProject = {
+      id: '',
       name: '',
-      description: ''
+      description: '',
+      startTime: new Date(),
+      duration: '',
+      estimatedDuration: '',
+      totalHours: 0,
+      people: []
     };
   }
 
   workOnProject(project: Project) {
-    console.log('Pracuję nad projektem:', project.name);
+    console.log('Working on project:', project.name);
   }
 
   private checkUserRole() {
-    const userRole = localStorage.getItem('userRole'); // Pobierz rolę użytkownika z localStorage
+    const userRole = localStorage.getItem('userRole');
 
     if (userRole === 'admin') {
       this.isAdmin = true;
-      this.isDevOps = true;
+      if (this.isDevOps !== undefined) {
+        this.isDevOps = true;
+      }
     } else if (userRole === 'devops') {
-      this.isDevOps = true;
+      if (this.isDevOps !== undefined) {
+        this.isDevOps = true;
+      }
     }
   }
-}
+}  
