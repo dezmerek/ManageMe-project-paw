@@ -37,8 +37,12 @@ export class RegisterComponent {
       return;
     }
 
+    // Generuj unikalny identyfikator dla nowego użytkownika
+    const userId = Date.now().toString();
+
     // Dodaj nowe konto do localStorage
     const newAccount = {
+      id: userId,
       login: this.login,
       password: this.password,
       firstName: this.firstName,
@@ -53,7 +57,7 @@ export class RegisterComponent {
     // Dodaj nowego użytkownika do listy `validUsers`
     const validUsersJSON = localStorage.getItem('validUsers');
     const validUsers: any[] = validUsersJSON ? JSON.parse(validUsersJSON) : [];
-    validUsers.push({ login: newAccount.login, password: newAccount.password, role: newAccount.role });
+    validUsers.push({ id: userId, login: newAccount.login, password: newAccount.password, role: newAccount.role });
     localStorage.setItem('validUsers', JSON.stringify(validUsers));
     console.log('Dodano nowego użytkownika do listy validUsers');
 

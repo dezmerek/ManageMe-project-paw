@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     const accountList = [
       {
+        id: '1',
         login: 'admin',
         password: 'admin',
         firstName: 'John',
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
         role: 'Admin'
       },
       {
+        id: '2',
         login: 'devops',
         password: 'devops',
         firstName: 'Jane',
@@ -31,6 +33,7 @@ export class AppComponent implements OnInit {
         role: 'DevOps'
       },
       {
+        id: '3',
         login: 'developer',
         password: 'developer',
         firstName: 'Michael',

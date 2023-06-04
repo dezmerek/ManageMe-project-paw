@@ -16,12 +16,16 @@ export class UserListComponent implements OnInit {
   }
 
   getUsersFromLocalStorage() {
-    const validUsersJSON = localStorage.getItem('validUsers');
-    const validUsers: User[] = validUsersJSON ? JSON.parse(validUsersJSON) : [];
-
     const accountsJSON = localStorage.getItem('accounts');
     const accounts: any[] = accountsJSON ? JSON.parse(accountsJSON) : [];
 
-    this.users = [...validUsers, ...accounts];
+    this.users = accounts.map(account => ({
+      id: account.id,
+      login: account.login,
+      firstName: account.firstName,
+      lastName: account.lastName,
+      role: account.role,
+      password: account.password
+    }));
   }
-}
+}  

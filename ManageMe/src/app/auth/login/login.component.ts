@@ -11,6 +11,7 @@ export class LoginComponent {
   @Output() authEvent = new EventEmitter<boolean>();
 
   user: User = {
+    id: '',
     login: '',
     password: '',
     firstName: '',
@@ -41,9 +42,9 @@ export class LoginComponent {
 
     const allUsers = [
       ...validUsers,
-      { login: 'admin', password: 'admin', role: 'admin' },
-      { login: 'devops', password: 'devops', role: 'devops' },
-      { login: 'developer', password: 'developer', role: 'developer' }
+      { id: '1', login: 'admin', password: 'admin', role: 'admin' },
+      { id: '2', login: 'devops', password: 'devops', role: 'devops' },
+      { id: '3', login: 'developer', password: 'developer', role: 'developer' }
     ];
 
     const foundUser = allUsers.find(
