@@ -16,7 +16,6 @@ import { EditProjectComponent } from './projects/edit-project/edit-project.compo
 import { FunctionalityComponent } from './functionality/functionality.component';
 import { AddFunctionalityComponent } from './functionality/add-functionality/add-functionality.component';
 import { DetailsFunctionalityComponent } from './functionality/details-functionality/details-functionality.component';
-import { TasksComponent } from './tasks/tasks.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +31,6 @@ import { TasksComponent } from './tasks/tasks.component';
     FunctionalityComponent,
     AddFunctionalityComponent,
     DetailsFunctionalityComponent,
-    TasksComponent,
   ],
   imports: [
     BrowserModule,
