@@ -13,6 +13,10 @@ import { AddProjectComponent } from './projects/add-project/add-project.componen
 import { ProjectDetailsComponent } from './projects/project-details/project-details.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditProjectComponent } from './projects/edit-project/edit-project.component';
+import { FunctionalityComponent } from './functionality/functionality.component';
+import { AddFunctionalityComponent } from './functionality/add-functionality/add-functionality.component';
+import { DetailsFunctionalityComponent } from './functionality/details-functionality/details-functionality.component';
+import { TasksComponent } from './tasks/tasks.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +29,10 @@ import { EditProjectComponent } from './projects/edit-project/edit-project.compo
     AddProjectComponent,
     ProjectDetailsComponent,
     EditProjectComponent,
+    FunctionalityComponent,
+    AddFunctionalityComponent,
+    DetailsFunctionalityComponent,
+    TasksComponent,
   ],
   imports: [
     BrowserModule,

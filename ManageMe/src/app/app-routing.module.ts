@@ -6,6 +6,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ProjectDetailsComponent } from './projects/project-details/project-details.component'; // Import komponentu
 import { EditProjectComponent } from './projects/edit-project/edit-project.component';
+import { FunctionalityComponent } from './functionality/functionality.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'auth/register', component: RegisterComponent },
   { path: 'projects', component: ProjectsComponent },
   { path: 'edit-project/:id', component: EditProjectComponent },
-  { path: 'projects/:id', component: ProjectDetailsComponent } // Dodaj ścieżkę do ProjectDetailsComponent z parametrem "id"
+  { path: 'projects/:id', component: ProjectDetailsComponent },
+  { path: 'functionality/:projectId', component: FunctionalityComponent }
 ];
 
 @NgModule({

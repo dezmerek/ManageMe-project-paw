@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary" (click)="showAddFunctionality = !showAddFunctionality">
+                Dodaj
+            </button>
+        </div>
+    </div>
+
+    <app-add-functionality *ngIf="showAddFunctionality"
+        (functionalityAdded)="addFunctionality($event)"></app-add-functionality>
+
+    <app-details-functionality [functionality]="selectedFunctionality"></app-details-functionality>
+
+    <h2>Lista funkcjonalności</h2>
+    <div class="row">
+        <div class="col">
+            <h3>Aktualnie wykonywane:</h3>
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let functionality of getFunctionalitiesByStatus('doing')"
+                    (click)="selectFunctionality(functionality)">
+                    {{ functionality.name }}
+                </li>
+            </ul>
+        </div>
+
+        <div class="col">
+            <h3>Czekające na wykonanie:</h3>
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let functionality of getFunctionalitiesByStatus('todo')"
+                    (click)="selectFunctionality(functionality)">
+                    {{ functionality.name }}
+                </li>
+            </ul>
+        </div>
+
+        <div class="col">
+            <h3>Zamknięte:</h3>
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let functionality of getFunctionalitiesByStatus('done')"
+                    (click)="selectFunctionality(functionality)">
+                    {{ functionality.name }}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Project } from '../models/project.model';
 import { v4 as uuidv4 } from 'uuid';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-projects',
@@ -26,6 +27,8 @@ export class ProjectsComponent implements OnInit {
 
   isAdmin = false;
   isDevOps = false;
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.loadProjectsFromLocalStorage();
@@ -145,8 +148,8 @@ export class ProjectsComponent implements OnInit {
     };
   }
 
-  workOnProject(project: Project) {
-    console.log('Working on project:', project.name);
+  workOnProject(projectId: string) {
+    this.router.navigate(['/functionality', projectId]);
   }
 
   private checkUserRole() {
@@ -163,4 +166,4 @@ export class ProjectsComponent implements OnInit {
       }
     }
   }
-}  
+}

@@ -6,7 +6,7 @@
                 <div class="card-body">
                     <h3 class="card-title">{{ project.name }}</h3>
                     <p class="card-text">{{ project.description }}</p>
-                    <button class="btn btn-primary" (click)="workOnProject(project)">Pracuj</button>
+                    <button class="btn btn-primary" (click)="workOnProject(project.id)">Pracuj</button>
                     <button *ngIf="isAdmin || isDevOps" class="btn btn-danger" (click)="deleteProject(i)">Usuń</button>
                     <button *ngIf="isAdmin || isDevOps" class="btn btn-secondary"
                         (click)="editProject(project, i)">Edytuj</button>
