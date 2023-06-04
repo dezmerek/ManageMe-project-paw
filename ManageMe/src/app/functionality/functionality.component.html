@@ -3,39 +3,39 @@
         <h2>Lista funkcjonalności</h2>
         <div class="row">
             <div class="col">
-                <h3>Czekające na wykonanie:</h3>
+                <h3>Todo:</h3>
                 <ul class="list-group">
                     <li class="list-group-item" *ngFor="let functionality of getFunctionalitiesByStatus('todo')"
                         (click)="selectFunctionality(functionality)">
                         {{ functionality.name }}
-                        <button class="btn btn-success"
-                            (click)="moveFunctionality(functionality, 'doing')">Doing</button>
-                        <button class="btn btn-success" (click)="moveFunctionality(functionality, 'done')">Done</button>
+                        <button class="btn btn-success" (click)="moveFunctionality(functionality, 'doing')">Move to
+                            Doing</button>
                     </li>
                 </ul>
             </div>
 
             <div class="col">
-                <h3>Aktualnie wykonywane:</h3>
+                <h3>Doing:</h3>
                 <ul class="list-group">
                     <li class="list-group-item" *ngFor="let functionality of getFunctionalitiesByStatus('doing')"
                         (click)="selectFunctionality(functionality)">
                         {{ functionality.name }}
-                        <button class="btn btn-success" (click)="moveFunctionality(functionality, 'todo')">Todo</button>
-                        <button class="btn btn-success" (click)="moveFunctionality(functionality, 'done')">Done</button>
+                        <button class="btn btn-success" (click)="moveFunctionality(functionality, 'todo')">Move to
+                            Todo</button>
+                        <button class="btn btn-success" (click)="moveFunctionality(functionality, 'done')">Move to
+                            Done</button>
                     </li>
                 </ul>
             </div>
 
             <div class="col">
-                <h3>Zamknięte:</h3>
+                <h3>Done:</h3>
                 <ul class="list-group">
                     <li class="list-group-item" *ngFor="let functionality of getFunctionalitiesByStatus('done')"
                         (click)="selectFunctionality(functionality)">
                         {{ functionality.name }}
-                        <button class="btn btn-success" (click)="moveFunctionality(functionality, 'todo')">Todo</button>
-                        <button class="btn btn-success"
-                            (click)="moveFunctionality(functionality, 'doing')">Doing</button>
+                        <button class="btn btn-success" (click)="moveFunctionality(functionality, 'doing')">Move to
+                            Doing</button>
                     </li>
                 </ul>
             </div>
@@ -60,24 +60,7 @@
     <app-details-functionality *ngIf="selectedFunctionality"
         [functionality]="selectedFunctionality"></app-details-functionality>
 
-    <div class="row" *ngIf="selectedFunctionality">
-        <div class="col">
-            <h3>Zadania:</h3>
-            <ul class="list-group">
-                <li class="list-group-item" *ngFor="let task of (selectedFunctionality?.tasks || [])"
-                    (click)="selectTask(task)">
-                    {{ task.name }}
-                    <button class="btn btn-success" (click)="moveTask(task, 'todo')">Todo</button>
-                    <button class="btn btn-success" (click)="moveTask(task, 'doing')">Doing</button>
-                    <button class="btn btn-success" (click)="moveTask(task, 'done')">Done</button>
-                </li>
-            </ul>
-        </div>
-
-        <div class="col">
-            <app-add-task (taskAdded)="addTask($event)"></app-add-task>
-        </div>
-    </div>
+    <app-tasks *ngIf="selectedFunctionality"></app-tasks>
 
     <button class="btn btn-primary" *ngIf="selectedFunctionality" (click)="clearSelectedFunctionality()">
         Powrót do listy funkcjonalności
