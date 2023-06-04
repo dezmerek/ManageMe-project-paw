@@ -94,7 +94,7 @@ export class TasksComponent implements OnInit {
   }
 
   toggleDetails(task: Task) {
-    task.showDetails = !task.showDetails;
+    this.selectedTask = task;
   }
 
   moveTask(task: Task, newStatus: string) {

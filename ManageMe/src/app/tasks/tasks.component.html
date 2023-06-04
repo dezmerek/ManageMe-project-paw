@@ -32,30 +32,19 @@
             </ul>
         </div>
     </div>
-
-    <div class="row mt-3" *ngIf="!selectedTask">
+    <div class="row mt-3" *ngIf="selectedTask">
         <div class="col-md-12">
-            <div *ngFor="let task of tasks">
-                <app-details-task *ngIf="task.showDetails" [task]="task"></app-details-task>
-            </div>
+            <app-details-task [task]="selectedTask"></app-details-task>
         </div>
     </div>
-
-    <div class="row mt-3" *ngIf="!selectedTask && !showAddTaskForm">
-        <div class="col-md-12">
+    <div class="row mt-3">
+        <div class=" col-md-12">
             <button class="btn btn-primary" (click)="toggleAddTaskForm()">Dodaj zadanie</button>
         </div>
     </div>
-
     <div class="row mt-3" *ngIf="showAddTaskForm">
         <div class="col-md-12">
             <app-add-task (taskAdded)="onTaskAdded($event)"></app-add-task>
-        </div>
-    </div>
-
-    <div class="row mt-3" *ngIf="selectedTask">
-        <div class="col-md-12">
-            <button class="btn btn-secondary" (click)="toggleDetails(selectedTask)">Powrót do listy zadań</button>
         </div>
     </div>
 </div>
