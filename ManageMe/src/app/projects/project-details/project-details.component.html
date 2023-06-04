@@ -5,11 +5,11 @@
             <p class="mb-2">Czas rozpoczęcia: {{ project.startTime | date }}</p>
             <p class="mb-2">Przewidywany czas trwania: {{ project.estimatedDuration }}</p>
             <p>Opis: {{ project.description }}</p>
-            <button class="btn btn-primary" (click)="editProject()">Edytuj</button>
+            <button *ngIf="isAdmin || isDevOps" class="btn btn-primary" (click)="editProject()">Edytuj</button>
         </div>
     </div>
 
-    <div class="row" *ngIf="showEditSection">
+    <div class="row" *ngIf="showEditSection && (isAdmin || isDevOps)">
         <div class="col-md-8 offset-md-2">
             <h3>Edytuj projekt</h3>
             <app-edit-project [project]="project" (projectUpdated)="updateProject($event)"></app-edit-project>

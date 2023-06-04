@@ -11,6 +11,10 @@ export class ProjectDetailsComponent implements OnInit {
   projectId: string = '';
   project: Project | undefined;
   showEditSection: boolean = false;
+  isEditing: boolean = false;
+  userRole: string = ''; // User role
+  isAdmin: boolean = false;
+  isDevOps: boolean = false;
 
   constructor(private route: ActivatedRoute, private router: Router) { }
 
@@ -20,7 +24,15 @@ export class ProjectDetailsComponent implements OnInit {
       console.log('Wczytano szczegóły projektu o ID:', this.projectId);
       this.loadProjectDetails();
     });
+
+    // Get the user role from localStorage
+    this.userRole = localStorage.getItem('userRole') || '';
+
+    // Check if the user has the "admin" or "devops" role
+    this.isAdmin = this.userRole === 'admin';
+    this.isDevOps = this.userRole === 'devops';
   }
+
 
   private loadProjectDetails() {
     const projects: Project[] = JSON.parse(localStorage.getItem('projects') || '[]');
@@ -30,17 +42,27 @@ export class ProjectDetailsComponent implements OnInit {
     }
   }
 
+  canEdit(): boolean {
+    // Check if the user has edit permissions (e.g., based on their role)
+    return this.userRole === 'devops' || this.userRole === 'admin';
+  }
+
   editProject() {
-    this.showEditSection = true;
+    if (this.canEdit()) {
+      this.showEditSection = true;
+      this.isEditing = true;
+    }
   }
 
   updateProject(updatedProject: Project) {
-    const projects: Project[] = JSON.parse(localStorage.getItem('projects') || '[]');
-    const projectIndex = projects.findIndex(p => p.id === this.projectId);
-    if (projectIndex !== -1) {
-      projects[projectIndex] = updatedProject;
-      localStorage.setItem('projects', JSON.stringify(projects));
-      this.showEditSection = false;
+    if (this.canEdit()) {
+      const projects: Project[] = JSON.parse(localStorage.getItem('projects') || '[]');
+      const projectIndex = projects.findIndex(p => p.id === this.projectId);
+      if (projectIndex !== -1) {
+        projects[projectIndex] = updatedProject;
+        localStorage.setItem('projects', JSON.stringify(projects));
+        this.isEditing = false;
+      }
     }
   }
 }
