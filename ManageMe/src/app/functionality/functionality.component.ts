@@ -13,9 +13,6 @@ export class FunctionalityComponent implements OnInit {
   selectedFunctionality: Functionality | null = null;
   showAddFunctionality = false;
 
-  newTaskName = '';
-  newTaskPriority = '';
-
   ngOnInit() {
     this.loadFunctionalities();
   }
@@ -26,7 +23,26 @@ export class FunctionalityComponent implements OnInit {
       this.functionalities = JSON.parse(storedFunctionalities);
     } else {
       this.functionalities = [
-        // ... Your initial set of functionalities ...
+        {
+          id: '1',
+          name: 'Functionality 1',
+          description: 'Sample functionality description',
+          priority: 'high',
+          project: '1',
+          owner: 'John Doe',
+          status: 'todo',
+          tasks: []
+        },
+        {
+          id: '2',
+          name: 'Functionality 2',
+          description: 'Sample functionality description',
+          priority: 'medium',
+          project: '2',
+          owner: 'Jane Smith',
+          status: 'doing',
+          tasks: []
+        }
       ];
       this.saveFunctionalities();
     }
@@ -58,22 +74,6 @@ export class FunctionalityComponent implements OnInit {
 
   moveFunctionality(functionality: Functionality, status: string) {
     functionality.status = status;
-    this.saveFunctionalities();
-  }
-
-  selectTask(task: Task) {
-    console.log('Selected task:', task);
-    // Perform operations on the selected task
-  }
-
-  moveTask(task: Task, status: string) {
-    task.status = status;
-    if (status === 'doing') {
-      task.startDate = new Date();
-      task.assignedUser = 'devops';
-    } else if (status === 'done') {
-      task.endDate = new Date();
-    }
     this.saveFunctionalities();
   }
 

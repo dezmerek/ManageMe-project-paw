@@ -18,6 +18,8 @@ import { AddFunctionalityComponent } from './functionality/add-functionality/add
 import { DetailsFunctionalityComponent } from './functionality/details-functionality/details-functionality.component';
 import { AddTaskComponent } from './tasks/add-task/add-task.component';
 import { TasksComponent } from './tasks/tasks.component';
+import { DetailsTaskComponent } from './tasks/details-task/details-task.component';
+import { EditTaskComponent } from './tasks/edit-task/edit-task.component'
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { TasksComponent } from './tasks/tasks.component';
     DetailsFunctionalityComponent,
     AddTaskComponent,
     TasksComponent,
+    DetailsTaskComponent,
+    EditTaskComponent,
   ],
   imports: [
     BrowserModule,

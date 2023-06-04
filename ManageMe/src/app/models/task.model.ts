@@ -2,12 +2,22 @@ import { Functionality } from './functionality.model';
 
 export interface Task {
     name: string;
-    description: string;
-    priority: string; // Upewnij się, że pole 'priority' jest obecne
-    functionality: Functionality;
-    estimatedTime: string;
     status: string;
-    startDate?: Date;
-    endDate?: Date;
+    description: string;
+    priority: string;
+    functionality: {
+        id: string;
+        name: string;
+        description: string;
+        priority: string;
+        project: string;
+        owner: string;
+        status: string;
+        tasks: Task[];
+    };
+    estimatedTime: string;
     assignedUser: string;
+    showDetails: boolean;
+    startDate?: string; // Dodane pole startDate (opcjonalne)
+    endDate?: string; // Dodane pole endDate (opcjonalne)
 }

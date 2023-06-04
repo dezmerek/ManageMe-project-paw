@@ -15,7 +15,7 @@ export class TasksComponent {
       description: 'Opis zadania 1',
       priority: 'High',
       functionality: {
-        id: 1,
+        id: '1',
         name: 'Funkcjonalność 1',
         description: 'Opis funkcjonalności 1',
         priority: 'High',
@@ -25,7 +25,8 @@ export class TasksComponent {
         tasks: []
       },
       estimatedTime: '2h',
-      assignedUser: 'John Doe'
+      assignedUser: 'John Doe',
+      showDetails: false // Dodane pole showDetails
     },
     {
       name: 'Przykładowe zadanie 2',
@@ -33,17 +34,18 @@ export class TasksComponent {
       description: 'Opis zadania 2',
       priority: 'Medium',
       functionality: {
-        id: 2,
+        id: '2',
         name: 'Funkcjonalność 2',
         description: 'Opis funkcjonalności 2',
-        priority: 'Medium',
-        project: 'Projekt 2',
+        priority: 'High',
+        project: 'Projekt 1',
         owner: 'Właściciel 2',
         status: 'Status 2',
         tasks: []
       },
       estimatedTime: '4h',
-      assignedUser: 'Jane Smith'
+      assignedUser: 'Jane Smith',
+      showDetails: false // Dodane pole showDetails
     },
     {
       name: 'Przykładowe zadanie 3',
@@ -51,19 +53,21 @@ export class TasksComponent {
       description: 'Opis zadania 3',
       priority: 'Low',
       functionality: {
-        id: 3,
+        id: '3',
         name: 'Funkcjonalność 3',
         description: 'Opis funkcjonalności 3',
-        priority: 'Low',
-        project: 'Projekt 3',
+        priority: 'Medium',
+        project: 'Projekt 2',
         owner: 'Właściciel 3',
         status: 'Status 3',
         tasks: []
       },
       estimatedTime: '1h',
-      assignedUser: 'David Johnson'
+      assignedUser: 'Mark Johnson',
+      showDetails: false // Dodane pole showDetails
     }
   ];
+  selectedTask: Task | null = null; // Zmienna przechowująca aktualnie wybrane zadanie
 
   toggleAddTaskForm() {
     this.showAddTaskForm = !this.showAddTaskForm;
@@ -80,4 +84,20 @@ export class TasksComponent {
   moveTask(task: Task, newStatus: string) {
     task.status = newStatus;
   }
+
+  editTask(task: Task) {
+    this.selectedTask = task;
+  }
+
+
+  toggleDetails(task: Task) {
+    this.tasks.forEach(t => {
+      if (t === task) {
+        t.showDetails = !t.showDetails; // Przełącz wartość showDetails dla klikniętego zadania
+      } else {
+        t.showDetails = false; // Ukryj szczegóły dla pozostałych zadań
+      }
+    });
+  }
+
 }

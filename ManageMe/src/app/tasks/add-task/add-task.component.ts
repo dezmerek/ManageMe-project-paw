@@ -15,7 +15,7 @@ export class AddTaskComponent {
   newTaskPriority = '';
   newTaskFunctionality = '';
   newTaskEstimatedTime = '';
-  newTaskStatus = 'todo'; // Ustawienie początkowego stanu na 'todo'
+  newTaskStatus = 'todo';
   newTaskStartDate: Date | undefined;
   newTaskEndDate: Date | undefined;
   newTaskAssignedUser = '';
@@ -26,7 +26,7 @@ export class AddTaskComponent {
       description: this.newTaskDescription,
       priority: this.newTaskPriority,
       functionality: {
-        id: 1, // Set a default value for the id
+        id: '1',
         name: this.newTaskFunctionality,
         description: '',
         priority: '',
@@ -37,15 +37,15 @@ export class AddTaskComponent {
       },
       estimatedTime: this.newTaskEstimatedTime,
       status: this.newTaskStatus,
-      startDate: this.newTaskStartDate,
-      endDate: this.newTaskEndDate,
-      assignedUser: this.newTaskAssignedUser
+      startDate: this.newTaskStartDate ? this.newTaskStartDate.toISOString() : undefined,
+      endDate: this.newTaskEndDate ? this.newTaskEndDate.toISOString() : undefined,
+      assignedUser: this.newTaskAssignedUser,
+      showDetails: false
     };
 
     this.taskAdded.emit(newTask);
     this.resetForm();
   }
-
 
   private resetForm() {
     this.newTaskName = '';
