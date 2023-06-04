@@ -1,6 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Task } from '../../models/task.model';
-import { Functionality } from '../../models/functionality.model';
 
 @Component({
   selector: 'app-add-task',
@@ -13,7 +12,7 @@ export class AddTaskComponent {
   newTaskName = '';
   newTaskDescription = '';
   newTaskPriority = '';
-  newTaskFunctionality = '';
+  newTaskFunctionality = ''; // Dodane pole newTaskFunctionality
   newTaskEstimatedTime = '';
   newTaskStatus = 'todo';
   newTaskStartDate: Date | undefined;
@@ -37,11 +36,16 @@ export class AddTaskComponent {
       },
       estimatedTime: this.newTaskEstimatedTime,
       status: this.newTaskStatus,
-      startDate: this.newTaskStartDate ? this.newTaskStartDate.toISOString() : undefined,
-      endDate: this.newTaskEndDate ? this.newTaskEndDate.toISOString() : undefined,
+      startDate: this.newTaskStartDate instanceof Date ? this.newTaskStartDate.toISOString() : undefined,
+      endDate: this.newTaskEndDate instanceof Date ? this.newTaskEndDate.toISOString() : undefined,
       assignedUser: this.newTaskAssignedUser,
       showDetails: false
     };
+
+    // Save the new task to local storage
+    const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    tasks.push(newTask);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
 
     this.taskAdded.emit(newTask);
     this.resetForm();

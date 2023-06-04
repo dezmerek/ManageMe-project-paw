@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Task } from '../models/task.model';
 
 @Component({
@@ -6,13 +6,27 @@ import { Task } from '../models/task.model';
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.scss']
 })
-export class TasksComponent {
+export class TasksComponent implements OnInit {
   showAddTaskForm = false;
-  tasks: Task[] = [
-    {
-      name: 'Przykładowe zadanie 1',
+  tasks: Task[] = [];
+  selectedTask: Task | null = null;
+
+  ngOnInit() {
+    // Load tasks from localStorage
+    const storedTasks = localStorage.getItem('tasks');
+    if (storedTasks) {
+      this.tasks = JSON.parse(storedTasks);
+    } else {
+      this.addSampleTasks();
+    }
+  }
+
+  addSampleTasks() {
+    // Dodaj przykładowe zadanie do statusu "todo"
+    const taskTodo: Task = {
+      name: 'Przykładowe zadanie - Todo',
       status: 'todo',
-      description: 'Opis zadania 1',
+      description: 'Opis przykładowego zadania - Todo',
       priority: 'High',
       functionality: {
         id: '1',
@@ -26,12 +40,14 @@ export class TasksComponent {
       },
       estimatedTime: '2h',
       assignedUser: 'John Doe',
-      showDetails: false // Dodane pole showDetails
-    },
-    {
-      name: 'Przykładowe zadanie 2',
+      showDetails: false
+    };
+
+    // Dodaj przykładowe zadanie do statusu "doing"
+    const taskDoing: Task = {
+      name: 'Przykładowe zadanie - Doing',
       status: 'doing',
-      description: 'Opis zadania 2',
+      description: 'Opis przykładowego zadania - Doing',
       priority: 'Medium',
       functionality: {
         id: '2',
@@ -45,12 +61,14 @@ export class TasksComponent {
       },
       estimatedTime: '4h',
       assignedUser: 'Jane Smith',
-      showDetails: false // Dodane pole showDetails
-    },
-    {
-      name: 'Przykładowe zadanie 3',
+      showDetails: false
+    };
+
+    // Dodaj przykładowe zadanie do statusu "done"
+    const taskDone: Task = {
+      name: 'Przykładowe zadanie - Done',
       status: 'done',
-      description: 'Opis zadania 3',
+      description: 'Opis przykładowego zadania - Done',
       priority: 'Low',
       functionality: {
         id: '3',
@@ -63,41 +81,37 @@ export class TasksComponent {
         tasks: []
       },
       estimatedTime: '1h',
-      assignedUser: 'Mark Johnson',
-      showDetails: false // Dodane pole showDetails
-    }
-  ];
-  selectedTask: Task | null = null; // Zmienna przechowująca aktualnie wybrane zadanie
+      assignedUser: 'Robert Johnson',
+      showDetails: false
+    };
+
+    this.tasks.push(taskTodo, taskDoing, taskDone);
+    this.saveTasksToLocalStorage();
+  }
+
+  getTasksByStatus(status: string) {
+    return this.tasks.filter(task => task.status === status);
+  }
+
+  toggleDetails(task: Task) {
+    task.showDetails = !task.showDetails;
+  }
+
+  moveTask(task: Task, newStatus: string) {
+    task.status = newStatus;
+    this.saveTasksToLocalStorage();
+  }
 
   toggleAddTaskForm() {
     this.showAddTaskForm = !this.showAddTaskForm;
   }
 
-  addTask(task: Task) {
+  onTaskAdded(task: Task) {
     this.tasks.push(task);
+    this.saveTasksToLocalStorage();
   }
 
-  getTasksByStatus(status: string): Task[] {
-    return this.tasks.filter(task => task.status === status);
+  saveTasksToLocalStorage() {
+    localStorage.setItem('tasks', JSON.stringify(this.tasks));
   }
-
-  moveTask(task: Task, newStatus: string) {
-    task.status = newStatus;
-  }
-
-  editTask(task: Task) {
-    this.selectedTask = task;
-  }
-
-
-  toggleDetails(task: Task) {
-    this.tasks.forEach(t => {
-      if (t === task) {
-        t.showDetails = !t.showDetails; // Przełącz wartość showDetails dla klikniętego zadania
-      } else {
-        t.showDetails = false; // Ukryj szczegóły dla pozostałych zadań
-      }
-    });
-  }
-
 }
