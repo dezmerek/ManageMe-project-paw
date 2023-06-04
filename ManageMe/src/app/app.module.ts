@@ -20,7 +20,8 @@ import { AddTaskComponent } from './tasks/add-task/add-task.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { DetailsTaskComponent } from './tasks/details-task/details-task.component';
 import { EditTaskComponent } from './tasks/edit-task/edit-task.component';
-import { NavbarComponent } from './navbar/navbar.component'
+import { NavbarComponent } from './navbar/navbar.component';
+import { UserListComponent } from './user-list/user-list.component'
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { NavbarComponent } from './navbar/navbar.component'
     DetailsTaskComponent,
     EditTaskComponent,
     NavbarComponent,
+    UserListComponent,
   ],
   imports: [
     BrowserModule,

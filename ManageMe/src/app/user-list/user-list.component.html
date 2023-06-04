@@ -1,0 +1,14 @@
+<app-navbar></app-navbar>
+
+
+<div class="custom-list-container">
+    <h2 class="h2 custom-heading">Lista użytkowników</h2>
+    <ul class="list-group custom-list">
+        <li class="list-group-item custom-list-item" *ngFor="let user of users">
+            <strong class="custom-label">Login:</strong> {{ user.login }}<br>
+            <strong class="custom-label">Imię:</strong> {{ user.firstName }}<br>
+            <strong class="custom-label">Nazwisko:</strong> {{ user.lastName }}<br>
+            <strong class="custom-label">Rola:</strong> {{ user.role }}
+        </li>
+    </ul>
+</div>

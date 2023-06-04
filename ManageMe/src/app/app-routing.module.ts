@@ -7,6 +7,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ProjectDetailsComponent } from './projects/project-details/project-details.component'; // Import komponentu
 import { EditProjectComponent } from './projects/edit-project/edit-project.component';
 import { FunctionalityComponent } from './functionality/functionality.component';
+import { UserListComponent } from './user-list/user-list.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'projects', component: ProjectsComponent },
   { path: 'edit-project/:id', component: EditProjectComponent },
   { path: 'projects/:id', component: ProjectDetailsComponent },
-  { path: 'functionality/:projectId', component: FunctionalityComponent }
+  { path: 'functionality/:projectId', component: FunctionalityComponent },
+  { path: 'user-list', component: UserListComponent }
 ];
 
 @NgModule({
