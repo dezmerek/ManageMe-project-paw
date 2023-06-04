@@ -1,47 +1,74 @@
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <button class="btn btn-primary" (click)="showAddFunctionality = !showAddFunctionality">
-                Dodaj
-            </button>
+    <div *ngIf="!selectedFunctionality">
+        <h2>Lista funkcjonalności</h2>
+        <div class="row">
+            <div class="col">
+                <h3>Czekające na wykonanie:</h3>
+                <ul class="list-group">
+                    <li class="list-group-item" *ngFor="let functionality of getFunctionalitiesByStatus('todo')"
+                        (click)="selectFunctionality(functionality)">
+                        {{ functionality.name }}
+                        <button class="btn btn-success"
+                            (click)="moveFunctionality(functionality, 'doing')">Doing</button>
+                        <button class="btn btn-success" (click)="moveFunctionality(functionality, 'done')">Done</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col">
+                <h3>Aktualnie wykonywane:</h3>
+                <ul class="list-group">
+                    <li class="list-group-item" *ngFor="let functionality of getFunctionalitiesByStatus('doing')"
+                        (click)="selectFunctionality(functionality)">
+                        {{ functionality.name }}
+                        <button class="btn btn-success" (click)="moveFunctionality(functionality, 'todo')">Todo</button>
+                        <button class="btn btn-success" (click)="moveFunctionality(functionality, 'done')">Done</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col">
+                <h3>Zamknięte:</h3>
+                <ul class="list-group">
+                    <li class="list-group-item" *ngFor="let functionality of getFunctionalitiesByStatus('done')"
+                        (click)="selectFunctionality(functionality)">
+                        {{ functionality.name }}
+                        <button class="btn btn-success" (click)="moveFunctionality(functionality, 'todo')">Todo</button>
+                        <button class="btn btn-success"
+                            (click)="moveFunctionality(functionality, 'doing')">Doing</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary" (click)="showAddFunctionality = !showAddFunctionality">
+                    Dodaj funkcjonalność
+                </button>
+            </div>
         </div>
     </div>
 
-    <app-add-functionality *ngIf="showAddFunctionality"
-        (functionalityAdded)="addFunctionality($event)"></app-add-functionality>
+    <div *ngIf="showAddFunctionality">
+        <app-add-functionality (functionalityAdded)="addFunctionality($event)"></app-add-functionality>
+        <button class="btn btn-primary" (click)="showAddFunctionality = false">
+            Anuluj
+        </button>
+    </div>
 
     <app-details-functionality [functionality]="selectedFunctionality"></app-details-functionality>
 
-    <h2>Lista funkcjonalności</h2>
-    <div class="row">
-        <div class="col">
-            <h3>Aktualnie wykonywane:</h3>
-            <ul class="list-group">
-                <li class="list-group-item" *ngFor="let functionality of getFunctionalitiesByStatus('doing')"
-                    (click)="selectFunctionality(functionality)">
-                    {{ functionality.name }}
-                </li>
-            </ul>
-        </div>
-
-        <div class="col">
-            <h3>Czekające na wykonanie:</h3>
-            <ul class="list-group">
-                <li class="list-group-item" *ngFor="let functionality of getFunctionalitiesByStatus('todo')"
-                    (click)="selectFunctionality(functionality)">
-                    {{ functionality.name }}
-                </li>
-            </ul>
-        </div>
-
-        <div class="col">
-            <h3>Zamknięte:</h3>
-            <ul class="list-group">
-                <li class="list-group-item" *ngFor="let functionality of getFunctionalitiesByStatus('done')"
-                    (click)="selectFunctionality(functionality)">
-                    {{ functionality.name }}
-                </li>
-            </ul>
-        </div>
+    <div *ngIf="selectedFunctionality">
+        <button class="btn btn-primary" (click)="selectedFunctionality = null">
+            Powrót do listy funkcjonalności
+        </button>
     </div>
+
+    <div class="mt-3" *ngIf="!selectedFunctionality">
+        <button routerLink="/projects" class="btn btn-primary">
+            Powrót do wszystkich projektów
+        </button>
+    </div>
+
 </div>

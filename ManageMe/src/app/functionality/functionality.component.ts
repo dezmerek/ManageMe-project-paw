@@ -68,4 +68,16 @@ export class FunctionalityComponent implements OnInit {
   getFunctionalitiesByStatus(status: string) {
     return this.functionalities.filter(functionality => functionality.status === status);
   }
+
+  pracuj(functionality: any) {
+    // Handle the "Pracuj" button click event for the functionality item
+    console.log('Pracuj clicked for:', functionality);
+    // Perform the desired functionality-specific action here
+    // For example, you can update the status of the functionality or perform some other operation.
+  }
+
+  moveFunctionality(functionality: any, status: string) {
+    functionality.status = status;
+    this.saveFunctionalities();
+  }
 }
