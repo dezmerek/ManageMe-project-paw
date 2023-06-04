@@ -13,6 +13,8 @@ import { AddProjectComponent } from './projects/add-project/add-project.componen
 import { ProjectDetailsComponent } from './projects/project-details/project-details.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditProjectComponent } from './projects/edit-project/edit-project.component';
+import { FunctionalityComponent } from './functionality/functionality.component';
+import { FormComponent } from './Functionality/form/form.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { EditProjectComponent } from './projects/edit-project/edit-project.compo
     AddProjectComponent,
     ProjectDetailsComponent,
     EditProjectComponent,
+    FunctionalityComponent,
+    FormComponent,
   ],
   imports: [
     BrowserModule,

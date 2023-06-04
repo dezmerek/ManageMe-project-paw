@@ -61,7 +61,8 @@ export class ProjectDetailsComponent implements OnInit {
       if (projectIndex !== -1) {
         projects[projectIndex] = updatedProject;
         localStorage.setItem('projects', JSON.stringify(projects));
-        this.isEditing = false;
+        this.isEditing = false; // Set isEditing to false after updating the project
+        this.showEditSection = false; // Hide the edit section
       }
     }
   }

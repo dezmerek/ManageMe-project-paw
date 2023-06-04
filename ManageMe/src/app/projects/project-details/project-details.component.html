@@ -22,5 +22,15 @@
         </div>
     </div>
 
-    <a routerLink="/projects" class="btn btn-primary">Powrót do projektu</a>
+    <div class="row" *ngIf="showEditSection && !(isAdmin || isDevOps)">
+        <div class="col-md-8 offset-md-2">
+            <p>Nie masz uprawnień do edycji projektu.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <a routerLink="/projects" class="btn btn-primary">Powrót do projektu</a>
+        </div>
+    </div>
 </div>
