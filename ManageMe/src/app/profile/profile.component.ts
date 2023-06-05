@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model';
 import { Functionality } from '../models/functionality.model';
+import { Task } from '../models/task.model';
 
 @Component({
   selector: 'app-profile',
@@ -11,6 +12,7 @@ import { Functionality } from '../models/functionality.model';
 export class ProfileComponent {
   loggedInUser: User | undefined;
   userFunctionalities: Functionality[] = [];
+  userTasks: Task[] = [];
   securityAnswer: string = '';
   securityAnswerCorrect: boolean = true;
   newPassword: string = '';
@@ -18,15 +20,13 @@ export class ProfileComponent {
   passwordChanged: boolean = false;
 
   constructor(private router: Router) {
-    // Pobierz informacje o zalogowanym użytkowniku
     this.loggedInUser = this.getLoggedInUser();
 
     if (!this.loggedInUser) {
-      // Przekieruj użytkownika na stronę logowania lub wykonaj inne odpowiednie działania
       this.router.navigate(['/login']);
     } else {
-      // Pobierz funkcjonalności przypisane do zalogowanego użytkownika
       this.getUserFunctionalities();
+      this.getUserTasks();
     }
   }
 
@@ -67,6 +67,29 @@ export class ProfileComponent {
     }
   }
 
+  getUserTasks() {
+    const tasksJSON = localStorage.getItem('tasks');
+    const tasks: Task[] = tasksJSON ? JSON.parse(tasksJSON) : [];
+
+    console.log('All tasks:', tasks);
+    console.log('Logged in user:', this.loggedInUser);
+
+    this.userTasks = tasks.filter((task: Task) => {
+      const assignedUserRole = task.assignedUser.toLowerCase();
+      const loggedInUserRole = this.loggedInUser?.role.toLowerCase();
+
+      console.log('Assigned user role:', assignedUserRole);
+      console.log('Logged in user role:', loggedInUserRole);
+
+      const isAssignedToUser = assignedUserRole === loggedInUserRole;
+
+      console.log('isAssignedToUser:', isAssignedToUser);
+
+      return isAssignedToUser;
+    });
+
+    console.log('User tasks:', this.userTasks);
+  }
 
   isSecurityAnswerValid(): boolean {
     return (
@@ -113,4 +136,6 @@ export class ProfileComponent {
       this.passwordChanged = true;
     }
   }
+
+
 }

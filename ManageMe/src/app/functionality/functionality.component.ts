@@ -15,10 +15,20 @@ export class FunctionalityComponent implements OnInit {
   showAddFunctionality = false;
   tasks: Task[] = [];
   accounts: any[] = []; // Tablica przechowująca informacje o osobach
+  loggedInUser: any = { role: 'Admin' }; // Initialize with the logged-in user information
+  canAddFunctionality(): boolean {
+    const role = this.loggedInUser?.role.toLowerCase();
+    return role === 'admin' || role === 'devops';
+  }
+
+  isAdmin = false;
+  isDevOps = false;
+  userRole: string | null = null;
 
   ngOnInit() {
     this.loadFunctionalities();
     this.loadAccounts(); // Wczytaj informacje o osobach z local storage
+    this.checkUserRole(); // Dodaj to wywołanie, aby sprawdzić rolę użytkownika
   }
 
   loadFunctionalities() {
@@ -64,7 +74,7 @@ export class FunctionalityComponent implements OnInit {
     newFunctionality.tasks = [];
     this.functionalities.push(newFunctionality);
     this.saveFunctionalities();
-    this.showAddFunctionality = false;
+    this.showAddFunctionality = false; // Ustaw showAddFunctionality na false
     this.selectedFunctionality = newFunctionality;
   }
 
@@ -111,6 +121,16 @@ export class FunctionalityComponent implements OnInit {
           this.saveFunctionalities();
         }
       }
+    }
+  }
+  private checkUserRole() {
+    this.userRole = localStorage.getItem('userRole');
+
+    if (this.userRole === 'Admin') {
+      this.isAdmin = true;
+      this.isDevOps = true;
+    } else if (this.userRole === 'DevOps') {
+      this.isDevOps = true;
     }
   }
 }

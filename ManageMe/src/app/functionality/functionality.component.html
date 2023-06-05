@@ -45,9 +45,10 @@
 
         <div class="row">
             <div class="col">
-                <button class="btn btn-primary" (click)="showAddFunctionality = !showAddFunctionality">
+                <button class="btn btn-primary" *ngIf="canAddFunctionality()" (click)="showAddFunctionality = true">
                     Dodaj funkcjonalność
                 </button>
+
             </div>
         </div>
     </div>
