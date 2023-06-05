@@ -14,8 +14,10 @@ export class FunctionalityComponent implements OnInit {
   selectedFunctionality: Functionality | null = null;
   showAddFunctionality = false;
   tasks: Task[] = [];
-  accounts: any[] = []; // Tablica przechowująca informacje o osobach
-  loggedInUser: any = { role: 'Admin' }; // Initialize with the logged-in user information
+  accounts: any[] = [];
+  loggedInUser: any = { role: 'Admin' };
+  projectName: string | null = null; // Declare projectName property
+
   canAddFunctionality(): boolean {
     const role = this.loggedInUser?.role.toLowerCase();
     return role === 'admin' || role === 'devops';
@@ -27,8 +29,23 @@ export class FunctionalityComponent implements OnInit {
 
   ngOnInit() {
     this.loadFunctionalities();
-    this.loadAccounts(); // Wczytaj informacje o osobach z local storage
-    this.checkUserRole(); // Dodaj to wywołanie, aby sprawdzić rolę użytkownika
+    this.loadAccounts();
+    this.checkUserRole();
+    this.loadProjectName(); // Call the function to load the project name
+  }
+
+  loadProjectName() {
+    const projectId = localStorage.getItem('projectId');
+    if (projectId) {
+      const projects = localStorage.getItem('projects');
+      if (projects) {
+        const parsedProjects = JSON.parse(projects);
+        const project = parsedProjects.find((p: any) => p.id === projectId);
+        if (project) {
+          this.projectName = project.name;
+        }
+      }
+    }
   }
 
   loadFunctionalities() {
