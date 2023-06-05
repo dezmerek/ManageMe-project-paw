@@ -150,6 +150,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   workOnProject(projectId: string) {
+    localStorage.setItem('projectId', projectId);
     this.router.navigate(['/functionality', projectId]);
   }
 
