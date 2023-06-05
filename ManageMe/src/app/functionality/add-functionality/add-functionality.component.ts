@@ -56,9 +56,16 @@ export class AddFunctionalityComponent {
 
   onSubmit() {
     this.newFunctionality.id = this.generateId();
-    this.functionalityAdded.emit(this.newFunctionality);
-    this.resetForm();
+    const projectId = localStorage.getItem('projectId');
+    if (projectId) {
+      this.newFunctionality.projectId = projectId;
+      this.functionalityAdded.emit(this.newFunctionality);
+      this.resetForm();
+    } else {
+      console.log('Nie wybrano projektu. Nie można dodać funkcjonalności.');
+    }
   }
+
 
   generateId() {
     return 'ID_' + Math.random().toString(36).substr(2, 9);

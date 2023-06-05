@@ -18,39 +18,29 @@ export class FunctionalityComponent implements OnInit {
   }
 
   loadFunctionalities() {
-    const storedFunctionalities = localStorage.getItem('functionalities');
-    if (storedFunctionalities) {
-      this.functionalities = JSON.parse(storedFunctionalities);
+    const projectId = localStorage.getItem('projectId');
+    if (projectId) {
+      const storedFunctionalities = localStorage.getItem(`functionalities_${projectId}`);
+      if (storedFunctionalities) {
+        this.functionalities = JSON.parse(storedFunctionalities);
+      } else {
+        this.functionalities = [];
+        this.saveFunctionalities();
+      }
     } else {
-      this.functionalities = [
-        {
-          id: '1',
-          name: 'Functionality 1',
-          description: 'Sample functionality description',
-          priority: 'high',
-          project: '1',
-          owner: 'John Doe',
-          status: 'todo',
-          tasks: []
-        },
-        {
-          id: '2',
-          name: 'Functionality 2',
-          description: 'Sample functionality description',
-          priority: 'medium',
-          project: '2',
-          owner: 'Jane Smith',
-          status: 'doing',
-          tasks: []
-        }
-      ];
-      this.saveFunctionalities();
+      console.log('Nie wybrano projektu. Nie można wczytać funkcjonalności.');
     }
   }
 
   saveFunctionalities() {
-    localStorage.setItem('functionalities', JSON.stringify(this.functionalities));
+    const projectId = localStorage.getItem('projectId');
+    if (projectId) {
+      localStorage.setItem(`functionalities_${projectId}`, JSON.stringify(this.functionalities));
+    } else {
+      console.log('Nie wybrano projektu. Nie można zapisać funkcjonalności.');
+    }
   }
+
 
   selectFunctionality(functionality: Functionality) {
     this.selectedFunctionality = functionality;
@@ -62,7 +52,6 @@ export class FunctionalityComponent implements OnInit {
     this.showAddFunctionality = false;
     this.selectedFunctionality = newFunctionality;
   }
-
   getFunctionalitiesByStatus(status: string) {
     return this.functionalities.filter(functionality => functionality.status === status);
   }
