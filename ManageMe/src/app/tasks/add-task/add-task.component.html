@@ -38,11 +38,18 @@
     </div>
     <div class="form-group">
         <label>Data startu:</label>
-        <input type="date" class="form-control" [(ngModel)]="newTaskStartDate" name="taskStartDate">
+        <input type="date" class="form-control" [(ngModel)]="newTaskStartDate" name="taskStartDate" required>
     </div>
     <div class="form-group">
         <label>Data zakończenia:</label>
         <input type="date" class="form-control" [(ngModel)]="newTaskEndDate" name="taskEndDate">
+    </div>
+    <div class="form-group">
+        <label for="functionality">Funkcjonalność:</label>
+        <select id="functionality" [(ngModel)]="newTaskFunctionality" name="taskFunctionality">
+            <option *ngFor="let functionality of functionalities" [value]="functionality.id">{{ functionality.name }}
+            </option>
+        </select>
     </div>
     <div class="form-group">
         <label>Użytkownik odpowiedzialny:</label>

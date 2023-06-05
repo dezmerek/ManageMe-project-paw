@@ -37,14 +37,4 @@
             <app-details-task [task]="selectedTask"></app-details-task>
         </div>
     </div>
-    <div class="row mt-3">
-        <div class=" col-md-12">
-            <button class="btn btn-primary" (click)="toggleAddTaskForm()">Dodaj zadanie</button>
-        </div>
-    </div>
-    <div class="row mt-3" *ngIf="showAddTaskForm">
-        <div class="col-md-12">
-            <app-add-task (taskAdded)="onTaskAdded($event)"></app-add-task>
-        </div>
-    </div>
 </div>

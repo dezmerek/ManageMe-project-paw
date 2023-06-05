@@ -62,7 +62,21 @@
     <app-details-functionality *ngIf="selectedFunctionality"
         [functionality]="selectedFunctionality"></app-details-functionality>
 
-    <app-tasks *ngIf="selectedFunctionality"></app-tasks>
+    <div *ngIf="selectedFunctionality">
+        <app-tasks></app-tasks>
+        <div *ngIf="selectedFunctionality && showAddTask">
+            <app-add-task [functionalities]="functionalities" (taskAdded)="addTask($event)"></app-add-task>
+        </div>
+    </div>
+
+    <button class="btn btn-primary" *ngIf="selectedFunctionality && !showAddTask" (click)="showAddTask = true">
+        Dodaj zadanie
+    </button>
+
+    <button class="btn btn-primary" *ngIf="selectedFunctionality && showAddTask" (click)="showAddTask = false">
+        Anuluj dodawanie zadania
+    </button>
+
 
     <button class="btn btn-primary" *ngIf="selectedFunctionality" (click)="clearSelectedFunctionality()">
         Powrót do listy funkcjonalności

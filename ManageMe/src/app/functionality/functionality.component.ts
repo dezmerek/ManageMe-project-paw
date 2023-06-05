@@ -9,9 +9,11 @@ import { Task } from '../models/task.model';
 })
 export class FunctionalityComponent implements OnInit {
   functionalities: Functionality[] = [];
+  showAddTask: boolean = false;
 
   selectedFunctionality: Functionality | null = null;
   showAddFunctionality = false;
+  tasks: Task[] = [];
 
   ngOnInit() {
     this.loadFunctionalities();
@@ -23,6 +25,11 @@ export class FunctionalityComponent implements OnInit {
       const storedFunctionalities = localStorage.getItem(`functionalities_${projectId}`);
       if (storedFunctionalities) {
         this.functionalities = JSON.parse(storedFunctionalities);
+
+        // Load tasks for each functionality
+        this.functionalities.forEach((functionality) => {
+          functionality.tasks = this.getTasksByFunctionality(functionality);
+        });
       } else {
         this.functionalities = [];
         this.saveFunctionalities();
@@ -41,19 +48,24 @@ export class FunctionalityComponent implements OnInit {
     }
   }
 
-
   selectFunctionality(functionality: Functionality) {
     this.selectedFunctionality = functionality;
   }
 
   addFunctionality(newFunctionality: Functionality) {
+    newFunctionality.tasks = [];
     this.functionalities.push(newFunctionality);
     this.saveFunctionalities();
     this.showAddFunctionality = false;
     this.selectedFunctionality = newFunctionality;
   }
+
   getFunctionalitiesByStatus(status: string) {
     return this.functionalities.filter(functionality => functionality.status === status);
+  }
+
+  getTasksByFunctionality(functionality: Functionality): Task[] {
+    return this.tasks.filter(task => task.functionality === functionality);
   }
 
   pracuj(functionality: Functionality) {
@@ -72,9 +84,30 @@ export class FunctionalityComponent implements OnInit {
 
   addTask(newTask: Task) {
     if (this.selectedFunctionality) {
-      newTask.functionality = this.selectedFunctionality;
+      if (!this.selectedFunctionality.tasks) {
+        this.selectedFunctionality.tasks = []; // Inicjalizuj tablicę zadań, jeśli nie istnieje
+      }
+
+      newTask.functionality = {
+        id: this.selectedFunctionality.id,
+        name: this.selectedFunctionality.name,
+        description: this.selectedFunctionality.description,
+        priority: this.selectedFunctionality.priority,
+        project: this.selectedFunctionality.project,
+        owner: this.selectedFunctionality.owner,
+        status: this.selectedFunctionality.status,
+        tasks: [] // Dodaj właściwość tasks tutaj
+      };
+
       this.selectedFunctionality.tasks.push(newTask);
+      this.tasks = this.getTasksByFunctionality(this.selectedFunctionality); // Pobierz zaktualizowaną listę zadań
+
       this.saveFunctionalities();
+      this.selectedFunctionality = { ...this.selectedFunctionality }; // Zaktualizuj referencję wybranej funkcjonalności, aby wywołać detekcję zmian
+
+      this.showAddTask = false; // Ukryj formularz po dodaniu zadania
     }
   }
+
+
 }

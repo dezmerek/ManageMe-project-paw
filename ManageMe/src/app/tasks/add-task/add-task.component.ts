@@ -1,39 +1,45 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Task } from '../../models/task.model';
+import { Functionality } from '../../models/functionality.model';
 
 @Component({
   selector: 'app-add-task',
   templateUrl: './add-task.component.html',
   styleUrls: ['./add-task.component.scss']
 })
-export class AddTaskComponent {
+export class AddTaskComponent implements OnInit {
+  @Input() functionalities: Functionality[] = [];
   @Output() taskAdded: EventEmitter<Task> = new EventEmitter<Task>();
 
   newTaskName = '';
   newTaskDescription = '';
   newTaskPriority = '';
-  newTaskFunctionality = ''; // Dodane pole newTaskFunctionality
+  newTaskFunctionality: string | null = null;
   newTaskEstimatedTime = '';
   newTaskStatus = 'todo';
   newTaskStartDate: Date | undefined;
   newTaskEndDate: Date | undefined;
   newTaskAssignedUser = '';
 
+  ngOnInit() {
+    if (this.functionalities.length > 0) {
+      this.newTaskFunctionality = this.functionalities[0].id;
+    }
+  }
+
   addTask() {
+    const functionality = this.getFunctionalityById(this.newTaskFunctionality);
+
+    if (!functionality) {
+      console.error('Nie znaleziono funkcjonalności o podanym identyfikatorze.');
+      return;
+    }
+
     const newTask: Task = {
       name: this.newTaskName,
       description: this.newTaskDescription,
       priority: this.newTaskPriority,
-      functionality: {
-        id: '1',
-        name: this.newTaskFunctionality,
-        description: '',
-        priority: '',
-        project: '',
-        owner: '',
-        status: '',
-        tasks: []
-      },
+      functionality: functionality,
       estimatedTime: this.newTaskEstimatedTime,
       status: this.newTaskStatus,
       startDate: this.newTaskStartDate instanceof Date ? this.newTaskStartDate.toISOString() : undefined,
@@ -42,7 +48,6 @@ export class AddTaskComponent {
       showDetails: false
     };
 
-    // Save the new task to local storage
     const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
     tasks.push(newTask);
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -51,11 +56,18 @@ export class AddTaskComponent {
     this.resetForm();
   }
 
+  private getFunctionalityById(functionalityId: string | null): Functionality | undefined {
+    if (functionalityId === null) {
+      return undefined;
+    }
+    return this.functionalities.find(functionality => functionality.id === functionalityId);
+  }
+
   private resetForm() {
     this.newTaskName = '';
     this.newTaskDescription = '';
     this.newTaskPriority = '';
-    this.newTaskFunctionality = '';
+    this.newTaskFunctionality = this.functionalities.length > 0 ? this.functionalities[0].id : null;
     this.newTaskEstimatedTime = '';
     this.newTaskStatus = 'todo';
     this.newTaskStartDate = undefined;
