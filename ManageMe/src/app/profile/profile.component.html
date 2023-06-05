@@ -52,4 +52,15 @@
             <div class="alert alert-success mt-3" *ngIf="passwordChanged">Hasło zostało zmienione</div>
         </div>
     </div>
+
+    <!-- Display user information -->
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Informacje o użytkowniku</h2>
+            <p><strong>Imię:</strong> {{ firstName }}</p>
+            <p><strong>Nazwisko:</strong> {{ lastName }}</p>
+            <p><strong>Login:</strong> {{ loggedInUser?.login }}</p>
+            <p><strong>Rola:</strong> {{ role }}</p>
+        </div>
+    </div>
 </div>

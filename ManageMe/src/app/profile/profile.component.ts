@@ -19,6 +19,10 @@ export class ProfileComponent {
   confirmPassword: string = '';
   passwordChanged: boolean = false;
 
+  firstName: string = '';
+  lastName: string = '';
+  role: string = '';
+
   constructor(private router: Router) {
     this.loggedInUser = this.getLoggedInUser();
 
@@ -27,8 +31,14 @@ export class ProfileComponent {
     } else {
       this.getUserFunctionalities();
       this.getUserTasks();
+
+      // Set user information
+      this.firstName = this.loggedInUser.firstName;
+      this.lastName = this.loggedInUser.lastName;
+      this.role = this.loggedInUser.role;
     }
   }
+
 
   getLoggedInUser(): User | undefined {
     const accountsJSON = localStorage.getItem('accounts');
@@ -39,6 +49,7 @@ export class ProfileComponent {
 
     return loggedInUser ? loggedInUser : undefined;
   }
+
 
   getUserFunctionalities() {
     const accountsJSON = localStorage.getItem('accounts');
@@ -136,6 +147,4 @@ export class ProfileComponent {
       this.passwordChanged = true;
     }
   }
-
-
 }
