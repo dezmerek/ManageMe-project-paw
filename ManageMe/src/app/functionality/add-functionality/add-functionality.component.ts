@@ -38,12 +38,11 @@ export class AddFunctionalityComponent {
 
     const user = accounts.find(account => account.id === loggedInUserId);
     if (user) {
-      this.newFunctionality.owner = `${user.firstName} ${user.lastName}`;
+      this.newFunctionality.owner = user.id; // Przypisanie ID użytkownika do funkcjonalności
     } else {
       console.log('Użytkownik nie jest zalogowany');
     }
   }
-
 
   getUserById(userId: string): User | undefined {
     // Pobierz użytkowników z localStorage lub z innego źródła danych
@@ -65,7 +64,6 @@ export class AddFunctionalityComponent {
       console.log('Nie wybrano projektu. Nie można dodać funkcjonalności.');
     }
   }
-
 
   generateId() {
     return 'ID_' + Math.random().toString(36).substr(2, 9);

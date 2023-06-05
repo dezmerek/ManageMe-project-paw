@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model';
+import { Functionality } from '../models/functionality.model';
 
 @Component({
   selector: 'app-profile',
@@ -8,15 +9,13 @@ import { User } from '../models/user.model';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent {
-  currentPassword: string = '';
+  loggedInUser: User | undefined;
+  userFunctionalities: Functionality[] = [];
+  securityAnswer: string = '';
+  securityAnswerCorrect: boolean = true;
   newPassword: string = '';
   confirmPassword: string = '';
-  securityQuestion: string = '';
-  securityAnswer: string = '';
-
-  loggedInUser: User | undefined;
   passwordChanged: boolean = false;
-  securityAnswerCorrect: boolean = true;
 
   constructor(private router: Router) {
     // Pobierz informacje o zalogowanym użytkowniku
@@ -25,6 +24,9 @@ export class ProfileComponent {
     if (!this.loggedInUser) {
       // Przekieruj użytkownika na stronę logowania lub wykonaj inne odpowiednie działania
       this.router.navigate(['/login']);
+    } else {
+      // Pobierz funkcjonalności przypisane do zalogowanego użytkownika
+      this.getUserFunctionalities();
     }
   }
 
@@ -37,6 +39,34 @@ export class ProfileComponent {
 
     return loggedInUser ? loggedInUser : undefined;
   }
+
+  getUserFunctionalities() {
+    const accountsJSON = localStorage.getItem('accounts');
+    const accounts: User[] = accountsJSON ? JSON.parse(accountsJSON) : [];
+
+    const loggedInUserId = localStorage.getItem('loggedInUserId');
+    const loggedInUser = accounts.find((user: User) => user.id === loggedInUserId);
+
+    if (loggedInUser) {
+      const userFunctionalities: Functionality[] = [];
+
+      let index = 1;
+      let key = 'functionalities_' + index;
+      let functionalitiesJSON = localStorage.getItem(key);
+
+      while (functionalitiesJSON) {
+        const functionalities: Functionality[] = JSON.parse(functionalitiesJSON);
+        userFunctionalities.push(...functionalities);
+
+        index++;
+        key = 'functionalities_' + index;
+        functionalitiesJSON = localStorage.getItem(key);
+      }
+
+      this.userFunctionalities = userFunctionalities.filter((functionality: Functionality) => functionality.owner === loggedInUser.id);
+    }
+  }
+
 
   isSecurityAnswerValid(): boolean {
     return (

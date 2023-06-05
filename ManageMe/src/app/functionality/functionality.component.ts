@@ -14,9 +14,11 @@ export class FunctionalityComponent implements OnInit {
   selectedFunctionality: Functionality | null = null;
   showAddFunctionality = false;
   tasks: Task[] = [];
+  accounts: any[] = []; // Tablica przechowująca informacje o osobach
 
   ngOnInit() {
     this.loadFunctionalities();
+    this.loadAccounts(); // Wczytaj informacje o osobach z local storage
   }
 
   loadFunctionalities() {
@@ -25,11 +27,6 @@ export class FunctionalityComponent implements OnInit {
       const storedFunctionalities = localStorage.getItem(`functionalities_${projectId}`);
       if (storedFunctionalities) {
         this.functionalities = JSON.parse(storedFunctionalities);
-
-        // Load tasks for each functionality
-        this.functionalities.forEach((functionality) => {
-          functionality.tasks = this.getTasksByFunctionality(functionality);
-        });
       } else {
         this.functionalities = [];
         this.saveFunctionalities();
@@ -46,6 +43,17 @@ export class FunctionalityComponent implements OnInit {
     } else {
       console.log('Nie wybrano projektu. Nie można zapisać funkcjonalności.');
     }
+  }
+
+  loadAccounts() {
+    const storedAccounts = localStorage.getItem('accounts');
+    if (storedAccounts) {
+      this.accounts = JSON.parse(storedAccounts);
+    }
+  }
+
+  saveAccounts() {
+    localStorage.setItem('accounts', JSON.stringify(this.accounts));
   }
 
   selectFunctionality(functionality: Functionality) {
@@ -65,7 +73,7 @@ export class FunctionalityComponent implements OnInit {
   }
 
   getTasksByFunctionality(functionality: Functionality): Task[] {
-    return this.tasks.filter(task => task.functionality === functionality);
+    return functionality.tasks || [];
   }
 
   pracuj(functionality: Functionality) {
@@ -84,30 +92,25 @@ export class FunctionalityComponent implements OnInit {
 
   addTask(newTask: Task) {
     if (this.selectedFunctionality) {
-      if (!this.selectedFunctionality.tasks) {
-        this.selectedFunctionality.tasks = []; // Inicjalizuj tablicę zadań, jeśli nie istnieje
+      const selectedAccountId = localStorage.getItem('selectedAccount');
+      if (selectedAccountId) {
+        const selectedAccount = this.accounts.find(account => account.id === selectedAccountId);
+        if (selectedAccount) {
+          newTask.functionality = {
+            id: this.selectedFunctionality.id,
+            name: this.selectedFunctionality.name,
+            description: this.selectedFunctionality.description,
+            priority: this.selectedFunctionality.priority,
+            project: this.selectedFunctionality.project,
+            owner: selectedAccount, // Przypisanie wybranej osoby do funkcjonalności
+            status: this.selectedFunctionality.status,
+            tasks: []
+          };
+
+          this.selectedFunctionality.tasks.push(newTask);
+          this.saveFunctionalities();
+        }
       }
-
-      newTask.functionality = {
-        id: this.selectedFunctionality.id,
-        name: this.selectedFunctionality.name,
-        description: this.selectedFunctionality.description,
-        priority: this.selectedFunctionality.priority,
-        project: this.selectedFunctionality.project,
-        owner: this.selectedFunctionality.owner,
-        status: this.selectedFunctionality.status,
-        tasks: [] // Dodaj właściwość tasks tutaj
-      };
-
-      this.selectedFunctionality.tasks.push(newTask);
-      this.tasks = this.getTasksByFunctionality(this.selectedFunctionality); // Pobierz zaktualizowaną listę zadań
-
-      this.saveFunctionalities();
-      this.selectedFunctionality = { ...this.selectedFunctionality }; // Zaktualizuj referencję wybranej funkcjonalności, aby wywołać detekcję zmian
-
-      this.showAddTask = false; // Ukryj formularz po dodaniu zadania
     }
   }
-
-
 }
