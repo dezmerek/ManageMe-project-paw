@@ -12,23 +12,11 @@
         </div>
         <div class="form-group">
             <label for="priority">Priorytet:</label>
-            <input type="text" id="priority" name="priority" [(ngModel)]="newFunctionality.priority" required
-                class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="projectId">Projekt ID:</label>
-            <input type="text" id="projectId" name="projectId" [(ngModel)]="newFunctionality.projectId" required
-                class="form-control" readonly>
-        </div>
-        <div class="form-group">
-            <label for="owner">Właściciel:</label>
-            <input type="text" id="owner" name="owner" [(ngModel)]="newFunctionality.owner" required
-                class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="status">Status:</label>
-            <input type="text" id="status" name="status" [(ngModel)]="newFunctionality.status" required
-                class="form-control" disabled>
+            <select id="priority" name="priority" class="form-control" [(ngModel)]="newFunctionality.priority" required>
+                <option value="Wysoki">Wysoki</option>
+                <option value="Średni">Średni</option>
+                <option value="Niski">Niski</option>
+            </select>
         </div>
 
         <button type="submit" class="btn btn-primary">Dodaj</button>

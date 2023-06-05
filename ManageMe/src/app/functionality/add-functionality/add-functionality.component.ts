@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { v4 as uuidv4 } from 'uuid';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-add-functionality',
@@ -13,14 +13,15 @@ export class AddFunctionalityComponent {
     id: '',
     name: '',
     description: '',
-    priority: '',
-    projectId: '', // Zmienione pole na "projectId"
+    priority: 'Wysoki', // Dodaj priorytet tutaj
+    projectId: '',
     owner: '',
     status: 'todo'
   };
 
   constructor() {
-    this.loadProjectIdFromLocalStorage(); // Dodajemy wywołanie funkcji odczytującej projectId z local storage przy tworzeniu komponentu
+    this.loadProjectIdFromLocalStorage();
+    this.loadLoggedInUser();
   }
 
   loadProjectIdFromLocalStorage() {
@@ -30,10 +31,37 @@ export class AddFunctionalityComponent {
     }
   }
 
+  loadLoggedInUser() {
+    const loggedInUserId = localStorage.getItem('loggedInUserId');
+    const accountsJSON = localStorage.getItem('accounts');
+    const accounts: any[] = accountsJSON ? JSON.parse(accountsJSON) : [];
+
+    const user = accounts.find(account => account.id === loggedInUserId);
+    if (user) {
+      this.newFunctionality.owner = `${user.firstName} ${user.lastName}`;
+    } else {
+      console.log('Użytkownik nie jest zalogowany');
+    }
+  }
+
+
+  getUserById(userId: string): User | undefined {
+    // Pobierz użytkowników z localStorage lub z innego źródła danych
+    const usersJSON = localStorage.getItem('users');
+    const users: User[] = usersJSON ? JSON.parse(usersJSON) : [];
+
+    // Znajdź użytkownika o podanym identyfikatorze
+    return users.find(user => user.id === userId);
+  }
+
   onSubmit() {
-    this.newFunctionality.id = uuidv4(); // Generowanie unikalnego ID
+    this.newFunctionality.id = this.generateId();
     this.functionalityAdded.emit(this.newFunctionality);
     this.resetForm();
+  }
+
+  generateId() {
+    return 'ID_' + Math.random().toString(36).substr(2, 9);
   }
 
   resetForm() {
@@ -42,7 +70,7 @@ export class AddFunctionalityComponent {
       name: '',
       description: '',
       priority: '',
-      projectId: '', // Zmienione pole na "projectId"
+      projectId: '',
       owner: '',
       status: 'todo'
     };
