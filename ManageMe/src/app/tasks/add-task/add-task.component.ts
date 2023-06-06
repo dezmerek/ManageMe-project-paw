@@ -36,7 +36,7 @@ export class AddTaskComponent implements OnInit {
     }
 
     const newTask: Task = {
-      id: this.generateId(),
+      id_task: functionality.id, // Przypisanie wartości id z funkcjonalności do id_task w zadaniu
       name: this.newTaskName,
       description: this.newTaskDescription,
       priority: this.newTaskPriority,

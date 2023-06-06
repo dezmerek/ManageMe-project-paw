@@ -1,9 +1,6 @@
-import { Functionality } from './functionality.model';
-
 export interface Task {
-    id: string;
+    id_task: string; // Nowe pole id_task
     name: string;
-    status: string;
     description: string;
     priority: string;
     functionality: {
@@ -17,8 +14,9 @@ export interface Task {
         tasks: Task[];
     };
     estimatedTime: string;
+    status: string;
+    startDate?: string;
+    endDate?: string;
     assignedUser: string;
     showDetails: boolean;
-    startDate?: string; // Dodane pole startDate (opcjonalne)
-    endDate?: string; // Dodane pole endDate (opcjonalne)
 }
