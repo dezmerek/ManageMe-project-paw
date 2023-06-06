@@ -1,6 +1,7 @@
 import { Functionality } from './functionality.model';
 
 export interface Task {
+    id: string;
     name: string;
     status: string;
     description: string;

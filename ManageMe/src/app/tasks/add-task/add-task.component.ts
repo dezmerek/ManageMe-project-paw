@@ -27,7 +27,6 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
-
   addTask() {
     const functionality = this.getFunctionalityById(this.newTaskFunctionality);
 
@@ -37,6 +36,7 @@ export class AddTaskComponent implements OnInit {
     }
 
     const newTask: Task = {
+      id: this.generateId(),
       name: this.newTaskName,
       description: this.newTaskDescription,
       priority: this.newTaskPriority,
@@ -58,6 +58,7 @@ export class AddTaskComponent implements OnInit {
       showDetails: false
     };
 
+    // Zapisz nowe zadanie do localStorage
     const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
     tasks.push(newTask);
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -65,8 +66,6 @@ export class AddTaskComponent implements OnInit {
     this.taskAdded.emit(newTask);
     this.resetForm();
   }
-
-
 
   private getFunctionalityById(functionalityId: string | null): Functionality | undefined {
     if (functionalityId === null) {
@@ -85,5 +84,9 @@ export class AddTaskComponent implements OnInit {
     this.newTaskStartDate = undefined;
     this.newTaskEndDate = undefined;
     this.newTaskAssignedUser = '';
+  }
+
+  private generateId() {
+    return 'ID_' + Math.random().toString(36).substr(2, 9);
   }
 }
