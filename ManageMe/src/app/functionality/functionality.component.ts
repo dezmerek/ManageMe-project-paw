@@ -87,7 +87,9 @@ export class FunctionalityComponent implements OnInit {
 
   selectFunctionality(functionality: Functionality) {
     this.selectedFunctionality = functionality;
+    localStorage.setItem('selectedFunctionalityId', functionality.id); // Zapisz identyfikator funkcjonalności w LocalStorage
   }
+
 
   addFunctionality(newFunctionality: Functionality) {
     newFunctionality.tasks = [];
@@ -102,9 +104,10 @@ export class FunctionalityComponent implements OnInit {
   }
 
   getTasksByFunctionality(functionality: Functionality): Task[] {
-    const tasksWithMatchingFunctionality = this.tasks.filter(task => task.functionality.id === functionality.id);
+    const tasksWithMatchingFunctionality = this.tasks.filter(task => task.id_task === functionality.id);
     return tasksWithMatchingFunctionality;
   }
+
 
 
   pracuj(functionality: Functionality) {

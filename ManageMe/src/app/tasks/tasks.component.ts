@@ -10,6 +10,7 @@ export class TasksComponent implements OnInit {
   showAddTaskForm = false;
   tasks: Task[] = [];
   selectedTask: Task | null = null;
+  selectedFunctionalityId: string | null = null;
 
   ngOnInit() {
     // Load tasks from localStorage
@@ -17,6 +18,10 @@ export class TasksComponent implements OnInit {
     if (storedTasks) {
       this.tasks = JSON.parse(storedTasks);
     }
+
+    // Load selectedFunctionalityId from localStorage
+    this.selectedFunctionalityId = localStorage.getItem('selectedFunctionalityId');
+
     this.saveTasksToLocalStorage();
   }
 
@@ -29,12 +34,13 @@ export class TasksComponent implements OnInit {
       const functionalityIds = parsedFunctionalities.map((functionality: any) => functionality.id);
 
       return this.tasks.filter(task => {
-        return task.status === status && functionalityIds.includes(task.functionality.id);
+        return task.status === status && functionalityIds.includes(task.functionality.id) && task.functionality.id === this.selectedFunctionalityId;
       });
     }
 
     return [];
   }
+
 
 
   addTask(task: Task) {
