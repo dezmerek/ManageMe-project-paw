@@ -27,6 +27,7 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
+
   addTask() {
     const functionality = this.getFunctionalityById(this.newTaskFunctionality);
 
@@ -39,7 +40,16 @@ export class AddTaskComponent implements OnInit {
       name: this.newTaskName,
       description: this.newTaskDescription,
       priority: this.newTaskPriority,
-      functionality: functionality,
+      functionality: {
+        id: functionality.id,
+        name: functionality.name,
+        description: functionality.description,
+        priority: functionality.priority,
+        project: functionality.project,
+        owner: functionality.owner,
+        status: functionality.status,
+        tasks: functionality.tasks
+      },
       estimatedTime: this.newTaskEstimatedTime,
       status: this.newTaskStatus,
       startDate: this.newTaskStartDate instanceof Date ? this.newTaskStartDate.toISOString() : undefined,
@@ -55,6 +65,8 @@ export class AddTaskComponent implements OnInit {
     this.taskAdded.emit(newTask);
     this.resetForm();
   }
+
+
 
   private getFunctionalityById(functionalityId: string | null): Functionality | undefined {
     if (functionalityId === null) {
