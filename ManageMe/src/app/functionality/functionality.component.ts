@@ -54,6 +54,7 @@ export class FunctionalityComponent implements OnInit {
       const storedFunctionalities = localStorage.getItem(`functionalities_${projectId}`);
       if (storedFunctionalities) {
         this.functionalities = JSON.parse(storedFunctionalities);
+        console.log('Loaded functionalities:', this.functionalities); // Add the log statement
       } else {
         this.functionalities = [];
         this.saveFunctionalities();
@@ -62,6 +63,7 @@ export class FunctionalityComponent implements OnInit {
       console.log('Nie wybrano projektu. Nie można wczytać funkcjonalności.');
     }
   }
+
 
   saveFunctionalities() {
     const projectId = localStorage.getItem('projectId');
@@ -100,8 +102,10 @@ export class FunctionalityComponent implements OnInit {
   }
 
   getTasksByFunctionality(functionality: Functionality): Task[] {
-    return functionality.tasks || [];
+    const tasksWithMatchingFunctionality = this.tasks.filter(task => task.functionality.id === functionality.id);
+    return tasksWithMatchingFunctionality;
   }
+
 
   pracuj(functionality: Functionality) {
     console.log('Pracuj clicked for:', functionality);

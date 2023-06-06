@@ -21,8 +21,21 @@ export class TasksComponent implements OnInit {
   }
 
   getTasksByStatus(status: string) {
-    return this.tasks.filter(task => task.status === status);
+    const projectId = localStorage.getItem('projectId');
+    const functionalities = localStorage.getItem(`functionalities_${projectId}`);
+
+    if (projectId && functionalities) {
+      const parsedFunctionalities = JSON.parse(functionalities);
+      const functionalityIds = parsedFunctionalities.map((functionality: any) => functionality.id);
+
+      return this.tasks.filter(task => {
+        return task.status === status && functionalityIds.includes(task.functionality.id);
+      });
+    }
+
+    return [];
   }
+
 
   addTask(task: Task) {
     // Implement your logic to add the task to the tasks array
